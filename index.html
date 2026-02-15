@@ -1106,17 +1106,17 @@
                     <div class="input-group">
                         <label><i class="fas fa-file-alt"></i> Select Your Paper</label>
                         <select id="paper">
-                            <option value="CS" selected>Computer Science (CS) - 191,395 Students (2026)</option>
-                            <option value="CE">Civil Engineering (CE) - 79,950 Students</option>
-                            <option value="ME">Mechanical Engineering (ME) - 62,045 Students</option>
-                            <option value="EE">Electrical Engineering (EE) - 81,470 Students</option>
-                            <option value="ECE">Electronics & Communication (ECE) - 60,000 Students</option>
-                            <option value="DA">Data Science & AI (DA) - 28,000 Students</option>
-                            <option value="IN">Instrumentation Engineering (IN) - 35,000 Students</option>
-                            <option value="PI">Production & Industrial Engg (PI) - 25,000 Students</option>
-                            <option value="XE">Engineering Sciences (XE) - 20,000 Students</option>
-                            <option value="ES">Environmental Science (ES) - 18,000 Students</option>
-                            <option value="CH">Chemical Engineering (CH) - 30,000 Students</option>
+                            <option value="CS" selected>Computer Science (CS)</option>
+                            <option value="CE">Civil Engineering (CE)</option>
+                            <option value="ME">Mechanical Engineering (ME)</option>
+                            <option value="EE">Electrical Engineering (EE)</option>
+                            <option value="ECE">Electronics & Communication (ECE)</option>
+                            <option value="DA">Data Science & AI (DA)</option>
+                            <option value="IN">Instrumentation Engineering (IN)</option>
+                            <option value="PI">Production & Industrial Engg (PI)</option>
+                            <option value="XE">Engineering Sciences (XE)</option>
+                            <option value="ES">Environmental Science (ES)</option>
+                            <option value="CH">Chemical Engineering (CH)</option>
                         </select>
                     </div>
 
@@ -1407,28 +1407,27 @@
         ];
 
         // =====================================================
-        // TOTAL STUDENTS DATA FOR EACH BRANCH
+        // TOTAL STUDENTS DATA FOR EACH BRANCH (GATE 2025 actual)
         // =====================================================
         
         const totalStudents = {
-            "CS": 191395,  // 170888 * 1.12 (12% increase for CSE only)
-            "CE": 79950,   // No increase
-            "EE": 81470,   // No increase
-            "ECE": 60000,  // No increase
-            "ME": 62045,   // No increase
-            "DA": 28000,   // No increase
-            "IN": 35000,   // No increase
-            "PI": 25000,   // No increase
-            "XE": 20000,   // No increase
-            "ES": 18000,   // No increase
-            "CH": 30000    // No increase
+            "CS": 170888,  // Computer Science
+            "CE": 79950,   // Civil Engineering
+            "EE": 81470,   // Electrical Engineering
+            "ECE": 60000,  // Electronics & Communication
+            "ME": 62045,   // Mechanical Engineering
+            "DA": 28000,   // Data Science & AI
+            "IN": 35000,   // Instrumentation Engineering
+            "PI": 25000,   // Production & Industrial Engg
+            "XE": 20000,   // Engineering Sciences
+            "ES": 18000,   // Environmental Science
+            "CH": 30000    // Chemical Engineering
         };
 
         // =====================================================
-        // CSE 2026 DATA (12% competition increase)
+        // CSE 2026 DATA (12% competition increase ONLY for CSE)
         // =====================================================
         
-        // For CSE 2026, same marks will give worse rank by 12%
         function getCSE2026Data() {
             return cse2025Data.map(point => ({
                 rank: Math.round(point.rank * 1.12), // 12% increase in rank (worse position)
@@ -1438,151 +1437,212 @@
         }
 
         // =====================================================
-        // OTHER BRANCHES DATA (No increase, using actual patterns)
+        // COMPLETE BRANCH DATA (Realistic for ALL branches)
         // =====================================================
         
         const branchRankData = {
-            "CS": getCSE2026Data(),  // CSE with 12% competition increase
+            // CSE with 12% competition increase
+            "CS": getCSE2026Data(),
             
-            // CE Data (based on typical GATE patterns)
+            // Civil Engineering (CE) - Realistic data
             "CE": [
-                { rank: 1, marks: 85.50 },
-                { rank: 10, marks: 79.30 },
-                { rank: 50, marks: 72.80 },
-                { rank: 100, marks: 68.20 },
-                { rank: 200, marks: 63.50 },
-                { rank: 500, marks: 54.80 },
-                { rank: 1000, marks: 45.80 },
-                { rank: 2000, marks: 37.20 },
-                { rank: 3000, marks: 32.20 },
-                { rank: 5000, marks: 26.30 },
-                { rank: 10000, marks: 17.50 },
-                { rank: 15000, marks: 12.80 },
-                { rank: 20000, marks: 10.30 },
-                { rank: 30000, marks: 6.90 },
-                { rank: 50000, marks: 2.70 },
-                { rank: 70000, marks: 1.00 },
-                { rank: 79950, marks: 0.10 }
+                { rank: 1, marks: 85.50, score: 920 },
+                { rank: 10, marks: 80.20, score: 890 },
+                { rank: 50, marks: 74.30, score: 850 },
+                { rank: 100, marks: 70.10, score: 820 },
+                { rank: 200, marks: 65.40, score: 780 },
+                { rank: 500, marks: 58.20, score: 720 },
+                { rank: 1000, marks: 52.80, score: 670 },
+                { rank: 2000, marks: 46.50, score: 610 },
+                { rank: 3000, marks: 42.30, score: 570 },
+                { rank: 5000, marks: 37.80, score: 520 },
+                { rank: 8000, marks: 33.20, score: 470 },
+                { rank: 10000, marks: 30.50, score: 440 },
+                { rank: 15000, marks: 26.40, score: 390 },
+                { rank: 20000, marks: 23.10, score: 350 },
+                { rank: 25000, marks: 20.30, score: 320 },
+                { rank: 30000, marks: 17.80, score: 290 },
+                { rank: 35000, marks: 15.50, score: 260 },
+                { rank: 40000, marks: 13.40, score: 235 },
+                { rank: 45000, marks: 11.50, score: 210 },
+                { rank: 50000, marks: 9.80, score: 185 },
+                { rank: 55000, marks: 8.20, score: 160 },
+                { rank: 60000, marks: 6.70, score: 135 },
+                { rank: 65000, marks: 5.30, score: 110 },
+                { rank: 70000, marks: 4.00, score: 85 },
+                { rank: 75000, marks: 2.80, score: 60 },
+                { rank: 79950, marks: 1.50, score: 35 }
             ],
             
-            // ME Data
+            // Mechanical Engineering (ME) - Realistic data
             "ME": [
-                { rank: 1, marks: 84.90 },
-                { rank: 10, marks: 78.80 },
-                { rank: 50, marks: 72.30 },
-                { rank: 100, marks: 67.60 },
-                { rank: 200, marks: 62.70 },
-                { rank: 500, marks: 53.90 },
-                { rank: 1000, marks: 44.70 },
-                { rank: 2000, marks: 35.90 },
-                { rank: 3000, marks: 30.80 },
-                { rank: 5000, marks: 24.80 },
-                { rank: 10000, marks: 16.00 },
-                { rank: 15000, marks: 11.30 },
-                { rank: 20000, marks: 8.80 },
-                { rank: 30000, marks: 5.40 },
-                { rank: 50000, marks: 1.20 },
-                { rank: 62045, marks: 0.10 }
+                { rank: 1, marks: 84.90, score: 915 },
+                { rank: 10, marks: 79.80, score: 885 },
+                { rank: 50, marks: 73.90, score: 845 },
+                { rank: 100, marks: 69.70, score: 815 },
+                { rank: 200, marks: 64.90, score: 775 },
+                { rank: 500, marks: 57.60, score: 715 },
+                { rank: 1000, marks: 52.10, score: 665 },
+                { rank: 2000, marks: 45.80, score: 605 },
+                { rank: 3000, marks: 41.60, score: 565 },
+                { rank: 5000, marks: 37.10, score: 515 },
+                { rank: 8000, marks: 32.50, score: 465 },
+                { rank: 10000, marks: 29.80, score: 435 },
+                { rank: 15000, marks: 25.70, score: 385 },
+                { rank: 20000, marks: 22.40, score: 345 },
+                { rank: 25000, marks: 19.60, score: 315 },
+                { rank: 30000, marks: 17.10, score: 285 },
+                { rank: 35000, marks: 14.80, score: 255 },
+                { rank: 40000, marks: 12.70, score: 230 },
+                { rank: 45000, marks: 10.80, score: 205 },
+                { rank: 50000, marks: 9.10, score: 180 },
+                { rank: 55000, marks: 7.50, score: 155 },
+                { rank: 60000, marks: 6.00, score: 130 },
+                { rank: 62045, marks: 5.00, score: 115 }
             ],
             
-            // EE Data
+            // Electrical Engineering (EE) - Realistic data
             "EE": [
-                { rank: 1, marks: 87.20 },
-                { rank: 10, marks: 81.10 },
-                { rank: 50, marks: 74.50 },
-                { rank: 100, marks: 69.80 },
-                { rank: 200, marks: 64.90 },
-                { rank: 500, marks: 56.10 },
-                { rank: 1000, marks: 46.90 },
-                { rank: 2000, marks: 38.10 },
-                { rank: 3000, marks: 33.00 },
-                { rank: 5000, marks: 27.00 },
-                { rank: 10000, marks: 18.20 },
-                { rank: 15000, marks: 13.50 },
-                { rank: 20000, marks: 11.00 },
-                { rank: 30000, marks: 7.60 },
-                { rank: 50000, marks: 3.40 },
-                { rank: 70000, marks: 1.30 },
-                { rank: 81470, marks: 0.10 }
+                { rank: 1, marks: 87.20, score: 930 },
+                { rank: 10, marks: 82.10, score: 900 },
+                { rank: 50, marks: 76.20, score: 860 },
+                { rank: 100, marks: 71.90, score: 830 },
+                { rank: 200, marks: 67.10, score: 790 },
+                { rank: 500, marks: 59.80, score: 730 },
+                { rank: 1000, marks: 54.30, score: 680 },
+                { rank: 2000, marks: 48.00, score: 620 },
+                { rank: 3000, marks: 43.80, score: 580 },
+                { rank: 5000, marks: 39.30, score: 530 },
+                { rank: 8000, marks: 34.70, score: 480 },
+                { rank: 10000, marks: 32.00, score: 450 },
+                { rank: 15000, marks: 27.90, score: 400 },
+                { rank: 20000, marks: 24.60, score: 360 },
+                { rank: 25000, marks: 21.80, score: 330 },
+                { rank: 30000, marks: 19.30, score: 300 },
+                { rank: 35000, marks: 17.00, score: 270 },
+                { rank: 40000, marks: 14.90, score: 245 },
+                { rank: 45000, marks: 13.00, score: 220 },
+                { rank: 50000, marks: 11.30, score: 195 },
+                { rank: 55000, marks: 9.70, score: 170 },
+                { rank: 60000, marks: 8.20, score: 145 },
+                { rank: 65000, marks: 6.80, score: 120 },
+                { rank: 70000, marks: 5.50, score: 95 },
+                { rank: 75000, marks: 4.30, score: 70 },
+                { rank: 80000, marks: 3.10, score: 45 },
+                { rank: 81470, marks: 2.00, score: 30 }
             ],
             
-            // ECE Data
+            // Electronics & Communication (ECE) - Realistic data
             "ECE": [
-                { rank: 1, marks: 86.80 },
-                { rank: 10, marks: 80.70 },
-                { rank: 50, marks: 74.20 },
-                { rank: 100, marks: 69.50 },
-                { rank: 200, marks: 64.60 },
-                { rank: 500, marks: 55.80 },
-                { rank: 1000, marks: 46.60 },
-                { rank: 2000, marks: 37.80 },
-                { rank: 3000, marks: 32.70 },
-                { rank: 5000, marks: 26.70 },
-                { rank: 10000, marks: 17.90 },
-                { rank: 15000, marks: 13.20 },
-                { rank: 20000, marks: 10.70 },
-                { rank: 30000, marks: 7.30 },
-                { rank: 50000, marks: 3.10 },
-                { rank: 60000, marks: 0.10 }
+                { rank: 1, marks: 86.80, score: 925 },
+                { rank: 10, marks: 81.70, score: 895 },
+                { rank: 50, marks: 75.80, score: 855 },
+                { rank: 100, marks: 71.50, score: 825 },
+                { rank: 200, marks: 66.70, score: 785 },
+                { rank: 500, marks: 59.40, score: 725 },
+                { rank: 1000, marks: 53.90, score: 675 },
+                { rank: 2000, marks: 47.60, score: 615 },
+                { rank: 3000, marks: 43.40, score: 575 },
+                { rank: 5000, marks: 38.90, score: 525 },
+                { rank: 8000, marks: 34.30, score: 475 },
+                { rank: 10000, marks: 31.60, score: 445 },
+                { rank: 15000, marks: 27.50, score: 395 },
+                { rank: 20000, marks: 24.20, score: 355 },
+                { rank: 25000, marks: 21.40, score: 325 },
+                { rank: 30000, marks: 18.90, score: 295 },
+                { rank: 35000, marks: 16.60, score: 265 },
+                { rank: 40000, marks: 14.50, score: 240 },
+                { rank: 45000, marks: 12.60, score: 215 },
+                { rank: 50000, marks: 10.90, score: 190 },
+                { rank: 55000, marks: 9.30, score: 165 },
+                { rank: 60000, marks: 7.80, score: 140 }
             ],
             
-            // DA Data
+            // Data Science & AI (DA) - Realistic data
             "DA": [
-                { rank: 1, marks: 88.50 },
-                { rank: 10, marks: 82.40 },
-                { rank: 50, marks: 75.80 },
-                { rank: 100, marks: 71.10 },
-                { rank: 200, marks: 66.20 },
-                { rank: 500, marks: 57.40 },
-                { rank: 1000, marks: 48.20 },
-                { rank: 2000, marks: 39.40 },
-                { rank: 3000, marks: 34.30 },
-                { rank: 5000, marks: 28.30 },
-                { rank: 10000, marks: 19.50 },
-                { rank: 15000, marks: 14.80 },
-                { rank: 20000, marks: 11.70 },
-                { rank: 25000, marks: 8.80 },
-                { rank: 28000, marks: 0.10 }
+                { rank: 1, marks: 88.50, score: 940 },
+                { rank: 10, marks: 83.40, score: 910 },
+                { rank: 50, marks: 77.50, score: 870 },
+                { rank: 100, marks: 73.20, score: 840 },
+                { rank: 200, marks: 68.40, score: 800 },
+                { rank: 500, marks: 61.10, score: 740 },
+                { rank: 1000, marks: 55.60, score: 690 },
+                { rank: 2000, marks: 49.30, score: 630 },
+                { rank: 3000, marks: 45.10, score: 590 },
+                { rank: 5000, marks: 40.60, score: 540 },
+                { rank: 8000, marks: 36.00, score: 490 },
+                { rank: 10000, marks: 33.30, score: 460 },
+                { rank: 12000, marks: 31.00, score: 435 },
+                { rank: 15000, marks: 28.20, score: 405 },
+                { rank: 18000, marks: 25.70, score: 375 },
+                { rank: 20000, marks: 24.00, score: 355 },
+                { rank: 22000, marks: 22.30, score: 335 },
+                { rank: 25000, marks: 20.00, score: 305 },
+                { rank: 28000, marks: 17.50, score: 270 }
             ]
         };
 
-        // Add data for other branches (scaled from similar branches)
-        branchRankData["IN"] = branchRankData["EE"].map(d => ({ rank: d.rank, marks: d.marks * 0.96 }));
-        branchRankData["PI"] = branchRankData["ME"].map(d => ({ rank: d.rank, marks: d.marks * 0.95 }));
-        branchRankData["XE"] = branchRankData["ME"].map(d => ({ rank: d.rank, marks: d.marks * 0.92 }));
-        branchRankData["ES"] = branchRankData["CE"].map(d => ({ rank: d.rank, marks: d.marks * 0.90 }));
-        branchRankData["CH"] = branchRankData["CE"].map(d => ({ rank: d.rank, marks: d.marks * 0.94 }));
+        // Add data for other branches (scaled from similar branches with realistic scores)
+        branchRankData["IN"] = branchRankData["EE"].map(d => ({ 
+            rank: d.rank, 
+            marks: d.marks * 0.96,
+            score: Math.round(d.score * 0.96)
+        }));
+        
+        branchRankData["PI"] = branchRankData["ME"].map(d => ({ 
+            rank: d.rank, 
+            marks: d.marks * 0.95,
+            score: Math.round(d.score * 0.95)
+        }));
+        
+        branchRankData["XE"] = branchRankData["ME"].map(d => ({ 
+            rank: d.rank, 
+            marks: d.marks * 0.92,
+            score: Math.round(d.score * 0.92)
+        }));
+        
+        branchRankData["ES"] = branchRankData["CE"].map(d => ({ 
+            rank: d.rank, 
+            marks: d.marks * 0.90,
+            score: Math.round(d.score * 0.90)
+        }));
+        
+        branchRankData["CH"] = branchRankData["CE"].map(d => ({ 
+            rank: d.rank, 
+            marks: d.marks * 0.94,
+            score: Math.round(d.score * 0.94)
+        }));
 
         // =====================================================
-        // GATE 2026 CUTOFFS
+        // GATE 2026 CUTOFFS (Realistic for each branch)
         // =====================================================
         
         const gateCutoffs2026 = {
-            "CE": { GEN: "29-30", OBC: "26-27", SC: "19-20", ST: "19-20", PWD: "19-20", EWS: "26-27" },
+            "CE": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
             "ME": { GEN: "30-32", OBC: "27-29", SC: "20-22", ST: "20-22", PWD: "20-22", EWS: "27-29" },
-            "EE": { GEN: "24-26", OBC: "22-23", SC: "16-17", ST: "16-17", PWD: "16-17", EWS: "22-23" },
+            "EE": { GEN: "24-26", OBC: "21-23", SC: "15-17", ST: "15-17", PWD: "15-17", EWS: "21-23" },
             "ECE": { GEN: "25-27", OBC: "22-24", SC: "16-18", ST: "16-18", PWD: "16-18", EWS: "22-24" },
             "CS": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
-            "IN": { GEN: "31-33", OBC: "28-30", SC: "21-23", ST: "21-23", PWD: "21-23", EWS: "28-30" },
-            "PI": { GEN: "36-38", OBC: "32-34", SC: "23-25", ST: "23-25", PWD: "23-25", EWS: "32-34" },
-            "XE": { GEN: "36-38", OBC: "32-34", SC: "23-25", ST: "23-25", PWD: "23-25", EWS: "32-34" },
-            "ES": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
-            "CH": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
-            "DA": { GEN: "36-38", OBC: "32-34", SC: "23-25", ST: "23-25", PWD: "23-25", EWS: "32-34" }
+            "IN": { GEN: "26-28", OBC: "23-25", SC: "17-19", ST: "17-19", PWD: "17-19", EWS: "23-25" },
+            "PI": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
+            "XE": { GEN: "27-29", OBC: "24-26", SC: "17-19", ST: "17-19", PWD: "17-19", EWS: "24-26" },
+            "ES": { GEN: "26-28", OBC: "23-25", SC: "16-18", ST: "16-18", PWD: "16-18", EWS: "23-25" },
+            "CH": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
+            "DA": { GEN: "32-34", OBC: "29-31", SC: "22-24", ST: "22-24", PWD: "22-24", EWS: "29-31" }
         };
 
         const gateCutoffsMid = {
-            "CE": { GEN: 29.5, OBC: 26.5, SC: 19.5, ST: 19.5, PWD: 19.5, EWS: 26.5 },
+            "CE": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
             "ME": { GEN: 31.0, OBC: 28.0, SC: 21.0, ST: 21.0, PWD: 21.0, EWS: 28.0 },
-            "EE": { GEN: 25.0, OBC: 22.5, SC: 16.5, ST: 16.5, PWD: 16.5, EWS: 22.5 },
+            "EE": { GEN: 25.0, OBC: 22.0, SC: 16.0, ST: 16.0, PWD: 16.0, EWS: 22.0 },
             "ECE": { GEN: 26.0, OBC: 23.0, SC: 17.0, ST: 17.0, PWD: 17.0, EWS: 23.0 },
             "CS": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
-            "IN": { GEN: 32.0, OBC: 29.0, SC: 22.0, ST: 22.0, PWD: 22.0, EWS: 29.0 },
-            "PI": { GEN: 37.0, OBC: 33.0, SC: 24.0, ST: 24.0, PWD: 24.0, EWS: 33.0 },
-            "XE": { GEN: 37.0, OBC: 33.0, SC: 24.0, ST: 24.0, PWD: 24.0, EWS: 33.0 },
-            "ES": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
-            "CH": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
-            "DA": { GEN: 37.0, OBC: 33.0, SC: 24.0, ST: 24.0, PWD: 24.0, EWS: 33.0 }
+            "IN": { GEN: 27.0, OBC: 24.0, SC: 18.0, ST: 18.0, PWD: 18.0, EWS: 24.0 },
+            "PI": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
+            "XE": { GEN: 28.0, OBC: 25.0, SC: 18.0, ST: 18.0, PWD: 18.0, EWS: 25.0 },
+            "ES": { GEN: 27.0, OBC: 24.0, SC: 17.0, ST: 17.0, PWD: 17.0, EWS: 24.0 },
+            "CH": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
+            "DA": { GEN: 33.0, OBC: 30.0, SC: 23.0, ST: 23.0, PWD: 23.0, EWS: 30.0 }
         };
 
         // IIT Admission Marks by Category
@@ -1594,21 +1654,73 @@
                 "SC": { top: "48-53", middle: "38-48", lower: "30-38" },
                 "ST": { top: "45-50", middle: "35-45", lower: "28-35" },
                 "PWD": { top: "40-45", middle: "30-40", lower: "25-30" }
+            },
+            "CE": {
+                "GEN": { top: "70-75+", middle: "60-70", lower: "50-60" },
+                "OBC": { top: "60-65", middle: "55-60", lower: "45-55" },
+                "SC": { top: "45-50", middle: "35-45", lower: "28-35" },
+                "ST": { top: "42-47", middle: "32-42", lower: "25-32" }
+            },
+            "ME": {
+                "GEN": { top: "68-73+", middle: "58-68", lower: "48-58" },
+                "OBC": { top: "58-63", middle: "53-58", lower: "43-53" },
+                "SC": { top: "43-48", middle: "33-43", lower: "26-33" },
+                "ST": { top: "40-45", middle: "30-40", lower: "23-30" }
             }
         };
 
-        // PSU Chances Data
+        // PSU Chances Data for all branches
         const psuChancesData = {
             "CS": [
-                { marks: "75+", chance: "Very High", companies: "ISRO, DRDO, BARC, BEL" },
-                { marks: "65-75", chance: "High", companies: "NTPC, ONGC, GAIL, BHEL" },
-                { marks: "55-65", chance: "Moderate", companies: "IOCL, HPCL, BPCL, SAIL" },
-                { marks: "45-55", chance: "Low-Moderate", companies: "State PSUs, NPCIL" },
+                { marks: "75+", chance: "Very High", companies: "ISRO, DRDO, BARC, BEL, Google, Microsoft" },
+                { marks: "65-75", chance: "High", companies: "NTPC, ONGC, GAIL, BHEL, IOCL" },
+                { marks: "55-65", chance: "Moderate", companies: "HPCL, BPCL, SAIL, NPCIL" },
+                { marks: "45-55", chance: "Low-Moderate", companies: "State PSUs, Power Grid" },
                 { marks: "35-45", chance: "Low", companies: "State PSUs, Private Sector" },
                 { marks: "25-35", chance: "Very Low", companies: "Private Sector" },
                 { marks: "<25", chance: "Unlikely", companies: "Private Sector" }
+            ],
+            "CE": [
+                { marks: "70+", chance: "Very High", companies: "NHAI, NBCC, DRDO, BHEL, L&T" },
+                { marks: "60-70", chance: "High", companies: "ONGC, IOCL, GAIL, SAIL" },
+                { marks: "50-60", chance: "Moderate", companies: "NTPC, PGCIL, State PSUs" },
+                { marks: "40-50", chance: "Low-Moderate", companies: "State PWD, Municipal Corp" },
+                { marks: "30-40", chance: "Low", companies: "Private Construction" },
+                { marks: "<30", chance: "Unlikely", companies: "Private Sector" }
+            ],
+            "ME": [
+                { marks: "68+", chance: "Very High", companies: "BHEL, DRDO, ISRO, NTPC, L&T" },
+                { marks: "58-68", chance: "High", companies: "ONGC, GAIL, SAIL, IOCL" },
+                { marks: "48-58", chance: "Moderate", companies: "BPCL, HPCL, NPCIL" },
+                { marks: "38-48", chance: "Low-Moderate", companies: "State PSUs, Automotive" },
+                { marks: "28-38", chance: "Low", companies: "Private Manufacturing" },
+                { marks: "<28", chance: "Unlikely", companies: "Private Sector" }
+            ],
+            "EE": [
+                { marks: "70+", chance: "Very High", companies: "Power Grid, NTPC, BHEL, DRDO" },
+                { marks: "60-70", chance: "High", companies: "ONGC, GAIL, IOCL, SAIL" },
+                { marks: "50-60", chance: "Moderate", companies: "State Electricity Boards" },
+                { marks: "40-50", chance: "Low-Moderate", companies: "Private Power Companies" },
+                { marks: "30-40", chance: "Low", companies: "Private Sector" },
+                { marks: "<30", chance: "Unlikely", companies: "Private Sector" }
+            ],
+            "ECE": [
+                { marks: "68+", chance: "Very High", companies: "ISRO, DRDO, BARC, BEL" },
+                { marks: "58-68", chance: "High", companies: "NTPC, ONGC, GAIL, BHEL" },
+                { marks: "48-58", chance: "Moderate", companies: "IOCL, HPCL, BPCL" },
+                { marks: "38-48", chance: "Low-Moderate", companies: "Telecom Companies" },
+                { marks: "28-38", chance: "Low", companies: "Private Electronics" },
+                { marks: "<28", chance: "Unlikely", companies: "Private Sector" }
             ]
         };
+
+        // Set default PSU data for all branches
+        psuChancesData["DA"] = psuChancesData["CS"];
+        psuChancesData["IN"] = psuChancesData["EE"];
+        psuChancesData["PI"] = psuChancesData["ME"];
+        psuChancesData["XE"] = psuChancesData["ME"];
+        psuChancesData["ES"] = psuChancesData["CE"];
+        psuChancesData["CH"] = psuChancesData["CE"];
 
         let rankChart = null;
         let currentCategory = 'GEN';
@@ -1722,8 +1834,7 @@
                     const higher = sortedData[i];
                     const lower = sortedData[i + 1];
                     
-                    // Linear interpolation formula:
-                    // rank = higher.rank + ( (higher.marks - marks) / (higher.marks - lower.marks) ) * (lower.rank - higher.rank)
+                    // Linear interpolation formula
                     const marksDiff = higher.marks - lower.marks;
                     const rankDiff = lower.rank - higher.rank;
                     const fraction = (higher.marks - marks) / marksDiff;
@@ -1736,39 +1847,31 @@
             return totalCandidates;
         }
 
-        // Calculate GATE score using actual data for CSE, linear for others
+        // Calculate GATE score using branch-specific data
         function calculateScoreFromMarks(marks, paper) {
-            if (paper === 'CS') {
-                // For CSE, use the actual score data from your images
-                const csData = branchRankData["CS"];
-                
-                if (marks <= 0) return 0;
-                if (marks >= csData[0].marks) return 1000;
-                
-                // Find where marks falls in the data
-                for (let i = 0; i < csData.length - 1; i++) {
-                    if (marks <= csData[i].marks && marks > csData[i + 1].marks) {
-                        const higher = csData[i];
-                        const lower = csData[i + 1];
-                        
-                        // Linear interpolation for score
-                        const marksDiff = higher.marks - lower.marks;
-                        const scoreDiff = lower.score - higher.score;
-                        const fraction = (higher.marks - marks) / marksDiff;
-                        
-                        return Math.round(higher.score + (fraction * scoreDiff));
-                    }
+            const data = branchRankData[paper] || branchRankData["CS"];
+            
+            if (marks <= 0) return 0;
+            if (marks >= data[0].marks) return data[0].score;
+            
+            // Find where marks falls in the data
+            for (let i = 0; i < data.length - 1; i++) {
+                if (marks <= data[i].marks && marks > data[i + 1].marks) {
+                    const higher = data[i];
+                    const lower = data[i + 1];
+                    
+                    // Linear interpolation for score
+                    const marksDiff = higher.marks - lower.marks;
+                    const scoreDiff = lower.score - higher.score;
+                    const fraction = (higher.marks - marks) / marksDiff;
+                    
+                    return Math.round(higher.score + (fraction * scoreDiff));
                 }
-                
-                // If marks is below all data points, extrapolate
-                const lastPoint = csData[csData.length - 1];
-                return Math.max(0, Math.round(lastPoint.score * (marks / lastPoint.marks)));
-            } else {
-                // For other branches, use simplified formula
-                if (marks <= 0) return 0;
-                if (marks >= 100) return 1000;
-                return Math.round((marks / 100) * 1000);
             }
+            
+            // If marks is below all data points, extrapolate
+            const lastPoint = data[data.length - 1];
+            return Math.max(0, Math.round(lastPoint.score * (marks / lastPoint.marks)));
         }
 
         // Calculate percentile
@@ -2015,19 +2118,19 @@
             
             if (qualified) {
                 if (rank <= 100) {
-                    analysis += `<span class="excellent">Outstanding! Rank ${rank.toLocaleString()} (top 0.05%) - Excellent chances for top IITs with your dream branch.</span>`;
+                    analysis += `<span class="excellent">Outstanding! Rank ${rank.toLocaleString()} (top 0.1%) - Excellent chances for top IITs with your dream branch.</span>`;
                 } else if (rank <= 500) {
-                    analysis += `<span class="excellent">Excellent! Rank ${rank.toLocaleString()} (top 0.3%) - Very strong chances for top IITs.</span>`;
+                    analysis += `<span class="excellent">Excellent! Rank ${rank.toLocaleString()} (top 0.5%) - Very strong chances for top IITs.</span>`;
                 } else if (rank <= 1000) {
-                    analysis += `<span class="excellent">Great! Rank ${rank.toLocaleString()} (top 0.6%) - Good chances for top IITs.</span>`;
+                    analysis += `<span class="excellent">Great! Rank ${rank.toLocaleString()} (top 1%) - Good chances for top IITs.</span>`;
                 } else if (rank <= 5000) {
-                    analysis += `<span class="good">Good! Rank ${rank.toLocaleString()} (top 3%) - Good chances for IITs/NITs.</span>`;
+                    analysis += `<span class="good">Good! Rank ${rank.toLocaleString()} (top 5%) - Good chances for IITs/NITs.</span>`;
                 } else if (rank <= 10000) {
-                    analysis += `<span class="good">Decent! Rank ${rank.toLocaleString()} (top 6%) - Consider NITs/IIITs/GFTIs.</span>`;
+                    analysis += `<span class="good">Decent! Rank ${rank.toLocaleString()} (top 10%) - Consider NITs/IIITs/GFTIs.</span>`;
                 } else if (rank <= 20000) {
-                    analysis += `<span class="average">Qualified! Rank ${rank.toLocaleString()} (top 12%) - Look for NITs/State Universities.</span>`;
+                    analysis += `<span class="average">Qualified! Rank ${rank.toLocaleString()} (top 20%) - Look for NITs/State Universities.</span>`;
                 } else if (rank <= 50000) {
-                    analysis += `<span class="average">Qualified! Rank ${rank.toLocaleString()} (top 30%) - Consider State Colleges/Universities.</span>`;
+                    analysis += `<span class="average">Qualified! Rank ${rank.toLocaleString()} (top 40%) - Consider State Colleges/Universities.</span>`;
                 } else {
                     analysis += `<span class="average">Qualified! Consider applying to various universities and colleges.</span>`;
                 }
