@@ -1407,242 +1407,694 @@
         ];
 
         // =====================================================
-        // TOTAL STUDENTS DATA FOR EACH BRANCH (GATE 2025 actual)
+        // 2025 STUDENT COUNTS (as provided)
         // =====================================================
         
-        const totalStudents = {
-            "CS": 170888,  // Computer Science
-            "CE": 79950,   // Civil Engineering
-            "EE": 81470,   // Electrical Engineering
-            "ECE": 60000,  // Electronics & Communication
-            "ME": 62045,   // Mechanical Engineering
-            "DA": 28000,   // Data Science & AI
-            "IN": 35000,   // Instrumentation Engineering
-            "PI": 25000,   // Production & Industrial Engg
-            "XE": 20000,   // Engineering Sciences
-            "ES": 18000,   // Environmental Science
-            "CH": 30000    // Chemical Engineering
+        const students2025 = {
+            "CS": 170888,
+            "CE": 79000,
+            "EE": 67700,
+            "ECE": 81500,
+            "ME": 62000,
+            "DA": 60000,
+            "IN": 35000,
+            "PI": 25000,
+            "XE": 20000,
+            "ES": 18000,
+            "CH": 30000
         };
 
         // =====================================================
-        // CSE 2026 DATA (12% competition increase ONLY for CSE)
+        // 2026 STUDENT COUNTS (±5% change as per your instruction)
         // =====================================================
         
-        function getCSE2026Data() {
-            return cse2025Data.map(point => ({
-                rank: Math.round(point.rank * 1.12), // 12% increase in rank (worse position)
-                marks: point.marks,
-                score: point.score
-            }));
+        const students2026 = {
+            "CS": 191395,  // 170888 * 1.12 (12% increase for CSE only)
+            "CE": Math.round(79000 * 1.05),  // 5% increase
+            "EE": Math.round(67700 * 0.95),  // 5% decrease
+            "ECE": Math.round(81500 * 1.05), // 5% increase
+            "ME": Math.round(62000 * 0.95),  // 5% decrease
+            "DA": Math.round(60000 * 1.05),  // 5% increase
+            "IN": 35000,   // No change
+            "PI": 25000,   // No change
+            "XE": 20000,   // No change
+            "ES": 18000,   // No change
+            "CH": 30000    // No change
+        };
+
+        // =====================================================
+        // FUNCTION TO CONVERT RANGE DATA TO POINTS
+        // =====================================================
+        
+        function convertRangeToPoints(ranges, branch, adjustFactor = 1.0) {
+            const points = [];
+            
+            // Add first point (rank 1) - extrapolate slightly higher than first range
+            if (ranges.length > 0) {
+                points.push({
+                    rank: 1,
+                    marks: ranges[0].avg_marks * 1.05,
+                    score: ranges[0].avg_score * 1.05
+                });
+            }
+            
+            // Add mid points for each range
+            ranges.forEach(range => {
+                const midRank = Math.floor((range.rank_start + range.rank_end) / 2);
+                points.push({
+                    rank: Math.round(midRank * adjustFactor),
+                    marks: range.avg_marks,
+                    score: range.avg_score
+                });
+            });
+            
+            // Add last point (last rank)
+            const lastRange = ranges[ranges.length - 1];
+            points.push({
+                rank: Math.round(lastRange.rank_end * adjustFactor),
+                marks: lastRange.avg_marks * 0.98,
+                score: lastRange.avg_score * 0.98
+            });
+            
+            return points.sort((a, b) => a.rank - b.rank);
         }
 
         // =====================================================
-        // COMPLETE BRANCH DATA (Realistic for ALL branches)
+        // ACTUAL CSV DATA FOR EACH BRANCH
         // =====================================================
         
+        // CE Data from CSV
+        const ceRanges = [
+            { rank_start: 1, rank_end: 199, avg_marks: 62.44, avg_score: 671 },
+            { rank_start: 200, rank_end: 399, avg_marks: 56.16, avg_score: 617 },
+            { rank_start: 400, rank_end: 599, avg_marks: 53.23, avg_score: 592 },
+            { rank_start: 600, rank_end: 799, avg_marks: 51.29, avg_score: 575 },
+            { rank_start: 800, rank_end: 999, avg_marks: 49.85, avg_score: 563 },
+            { rank_start: 1000, rank_end: 1199, avg_marks: 48.69, avg_score: 553 },
+            { rank_start: 1200, rank_end: 1399, avg_marks: 47.73, avg_score: 545 },
+            { rank_start: 1400, rank_end: 1599, avg_marks: 46.91, avg_score: 538 },
+            { rank_start: 1600, rank_end: 1799, avg_marks: 46.19, avg_score: 532 },
+            { rank_start: 1800, rank_end: 1999, avg_marks: 45.55, avg_score: 526 },
+            { rank_start: 2000, rank_end: 2199, avg_marks: 44.97, avg_score: 521 },
+            { rank_start: 2200, rank_end: 2399, avg_marks: 44.45, avg_score: 517 },
+            { rank_start: 2400, rank_end: 2599, avg_marks: 43.97, avg_score: 513 },
+            { rank_start: 2600, rank_end: 2799, avg_marks: 43.52, avg_score: 509 },
+            { rank_start: 2800, rank_end: 2999, avg_marks: 43.11, avg_score: 505 },
+            { rank_start: 3000, rank_end: 3199, avg_marks: 42.73, avg_score: 502 },
+            { rank_start: 3200, rank_end: 3399, avg_marks: 42.37, avg_score: 499 },
+            { rank_start: 3400, rank_end: 3599, avg_marks: 42.03, avg_score: 496 },
+            { rank_start: 3600, rank_end: 3799, avg_marks: 41.71, avg_score: 493 },
+            { rank_start: 3800, rank_end: 3999, avg_marks: 41.41, avg_score: 491 },
+            { rank_start: 4000, rank_end: 4199, avg_marks: 41.12, avg_score: 488 },
+            { rank_start: 4200, rank_end: 4399, avg_marks: 40.85, avg_score: 486 },
+            { rank_start: 4400, rank_end: 4599, avg_marks: 40.58, avg_score: 483 },
+            { rank_start: 4600, rank_end: 4799, avg_marks: 40.33, avg_score: 481 },
+            { rank_start: 4800, rank_end: 4999, avg_marks: 40.09, avg_score: 479 },
+            { rank_start: 5000, rank_end: 5199, avg_marks: 39.86, avg_score: 477 },
+            { rank_start: 5200, rank_end: 5399, avg_marks: 39.64, avg_score: 475 },
+            { rank_start: 5400, rank_end: 5599, avg_marks: 39.43, avg_score: 474 },
+            { rank_start: 5600, rank_end: 5799, avg_marks: 39.22, avg_score: 472 },
+            { rank_start: 5800, rank_end: 5999, avg_marks: 39.03, avg_score: 470 },
+            { rank_start: 6000, rank_end: 6199, avg_marks: 38.83, avg_score: 468 },
+            { rank_start: 6200, rank_end: 6399, avg_marks: 38.65, avg_score: 467 },
+            { rank_start: 6400, rank_end: 6599, avg_marks: 38.47, avg_score: 465 },
+            { rank_start: 6600, rank_end: 6799, avg_marks: 38.29, avg_score: 464 },
+            { rank_start: 6800, rank_end: 6999, avg_marks: 38.12, avg_score: 462 },
+            { rank_start: 7000, rank_end: 7199, avg_marks: 37.96, avg_score: 461 },
+            { rank_start: 7200, rank_end: 7399, avg_marks: 37.8, avg_score: 460 },
+            { rank_start: 7400, rank_end: 7599, avg_marks: 37.65, avg_score: 458 },
+            { rank_start: 7600, rank_end: 7799, avg_marks: 37.49, avg_score: 457 },
+            { rank_start: 7800, rank_end: 7999, avg_marks: 37.35, avg_score: 456 },
+            { rank_start: 8000, rank_end: 8199, avg_marks: 37.2, avg_score: 454 },
+            { rank_start: 8200, rank_end: 8399, avg_marks: 37.06, avg_score: 453 },
+            { rank_start: 8400, rank_end: 8599, avg_marks: 36.92, avg_score: 452 },
+            { rank_start: 8600, rank_end: 8799, avg_marks: 36.79, avg_score: 451 },
+            { rank_start: 8800, rank_end: 8999, avg_marks: 36.66, avg_score: 450 },
+            { rank_start: 9000, rank_end: 9199, avg_marks: 36.53, avg_score: 449 },
+            { rank_start: 9200, rank_end: 9399, avg_marks: 36.41, avg_score: 448 },
+            { rank_start: 9400, rank_end: 9599, avg_marks: 36.28, avg_score: 446 },
+            { rank_start: 9600, rank_end: 9799, avg_marks: 36.16, avg_score: 445 },
+            { rank_start: 9800, rank_end: 9999, avg_marks: 36.05, avg_score: 444 },
+            { rank_start: 10000, rank_end: 10199, avg_marks: 35.93, avg_score: 443 },
+            { rank_start: 10200, rank_end: 10399, avg_marks: 35.82, avg_score: 442 },
+            { rank_start: 10400, rank_end: 10599, avg_marks: 35.71, avg_score: 442 },
+            { rank_start: 10600, rank_end: 10799, avg_marks: 35.6, avg_score: 441 },
+            { rank_start: 10800, rank_end: 10999, avg_marks: 35.49, avg_score: 440 },
+            { rank_start: 11000, rank_end: 11199, avg_marks: 35.39, avg_score: 439 },
+            { rank_start: 11200, rank_end: 11399, avg_marks: 35.29, avg_score: 438 },
+            { rank_start: 11400, rank_end: 11599, avg_marks: 35.19, avg_score: 437 },
+            { rank_start: 11600, rank_end: 11799, avg_marks: 35.09, avg_score: 436 },
+            { rank_start: 11800, rank_end: 11999, avg_marks: 34.99, avg_score: 435 },
+            { rank_start: 12000, rank_end: 12199, avg_marks: 34.89, avg_score: 435 },
+            { rank_start: 12200, rank_end: 12399, avg_marks: 34.8, avg_score: 434 },
+            { rank_start: 12400, rank_end: 12599, avg_marks: 34.71, avg_score: 433 },
+            { rank_start: 12600, rank_end: 12799, avg_marks: 34.61, avg_score: 432 },
+            { rank_start: 12800, rank_end: 12999, avg_marks: 34.52, avg_score: 431 },
+            { rank_start: 13000, rank_end: 13199, avg_marks: 34.44, avg_score: 431 },
+            { rank_start: 13200, rank_end: 13399, avg_marks: 34.35, avg_score: 430 },
+            { rank_start: 13400, rank_end: 13599, avg_marks: 34.26, avg_score: 429 },
+            { rank_start: 13600, rank_end: 13799, avg_marks: 34.18, avg_score: 428 },
+            { rank_start: 13800, rank_end: 13999, avg_marks: 34.09, avg_score: 428 },
+            { rank_start: 14000, rank_end: 14199, avg_marks: 34.01, avg_score: 427 },
+            { rank_start: 14200, rank_end: 14399, avg_marks: 33.93, avg_score: 426 },
+            { rank_start: 14400, rank_end: 14599, avg_marks: 33.85, avg_score: 426 },
+            { rank_start: 14600, rank_end: 14799, avg_marks: 33.77, avg_score: 425 },
+            { rank_start: 14800, rank_end: 14999, avg_marks: 33.69, avg_score: 424 },
+            { rank_start: 15000, rank_end: 15199, avg_marks: 33.62, avg_score: 424 },
+            { rank_start: 15200, rank_end: 15399, avg_marks: 33.54, avg_score: 423 },
+            { rank_start: 15400, rank_end: 15599, avg_marks: 33.47, avg_score: 422 },
+            { rank_start: 15600, rank_end: 15799, avg_marks: 33.39, avg_score: 422 },
+            { rank_start: 15800, rank_end: 15999, avg_marks: 33.32, avg_score: 421 },
+            { rank_start: 16000, rank_end: 16199, avg_marks: 33.25, avg_score: 420 },
+            { rank_start: 16200, rank_end: 16399, avg_marks: 33.18, avg_score: 420 },
+            { rank_start: 16400, rank_end: 16599, avg_marks: 33.11, avg_score: 419 },
+            { rank_start: 16600, rank_end: 16799, avg_marks: 33.04, avg_score: 419 },
+            { rank_start: 16800, rank_end: 16999, avg_marks: 32.97, avg_score: 418 },
+            { rank_start: 17000, rank_end: 17199, avg_marks: 32.9, avg_score: 417 },
+            { rank_start: 17200, rank_end: 17399, avg_marks: 32.83, avg_score: 417 },
+            { rank_start: 17400, rank_end: 17599, avg_marks: 32.77, avg_score: 416 },
+            { rank_start: 17600, rank_end: 17799, avg_marks: 32.7, avg_score: 416 },
+            { rank_start: 17800, rank_end: 17999, avg_marks: 32.64, avg_score: 415 },
+            { rank_start: 18000, rank_end: 18199, avg_marks: 32.57, avg_score: 415 },
+            { rank_start: 18200, rank_end: 18399, avg_marks: 32.51, avg_score: 414 },
+            { rank_start: 18400, rank_end: 18599, avg_marks: 32.45, avg_score: 414 },
+            { rank_start: 18600, rank_end: 18799, avg_marks: 32.39, avg_score: 413 },
+            { rank_start: 18800, rank_end: 18999, avg_marks: 32.33, avg_score: 412 },
+            { rank_start: 19000, rank_end: 19199, avg_marks: 32.27, avg_score: 412 },
+            { rank_start: 19200, rank_end: 19399, avg_marks: 32.21, avg_score: 411 },
+            { rank_start: 19400, rank_end: 19599, avg_marks: 32.15, avg_score: 411 },
+            { rank_start: 19600, rank_end: 19799, avg_marks: 32.09, avg_score: 410 },
+            { rank_start: 19800, rank_end: 20000, avg_marks: 32.03, avg_score: 410 }
+        ];
+
+        // DA Data from CSV
+        const daRanges = [
+            { rank_start: 1, rank_end: 199, avg_marks: 65.44, avg_score: 681 },
+            { rank_start: 200, rank_end: 399, avg_marks: 59.16, avg_score: 630 },
+            { rank_start: 400, rank_end: 599, avg_marks: 56.23, avg_score: 606 },
+            { rank_start: 600, rank_end: 799, avg_marks: 54.29, avg_score: 590 },
+            { rank_start: 800, rank_end: 999, avg_marks: 52.85, avg_score: 578 },
+            { rank_start: 1000, rank_end: 1199, avg_marks: 51.69, avg_score: 569 },
+            { rank_start: 1200, rank_end: 1399, avg_marks: 50.73, avg_score: 561 },
+            { rank_start: 1400, rank_end: 1599, avg_marks: 49.91, avg_score: 554 },
+            { rank_start: 1600, rank_end: 1799, avg_marks: 49.19, avg_score: 548 },
+            { rank_start: 1800, rank_end: 1999, avg_marks: 48.55, avg_score: 543 },
+            { rank_start: 2000, rank_end: 2199, avg_marks: 47.97, avg_score: 538 },
+            { rank_start: 2200, rank_end: 2399, avg_marks: 47.45, avg_score: 534 },
+            { rank_start: 2400, rank_end: 2599, avg_marks: 46.97, avg_score: 530 },
+            { rank_start: 2600, rank_end: 2799, avg_marks: 46.52, avg_score: 526 },
+            { rank_start: 2800, rank_end: 2999, avg_marks: 46.11, avg_score: 523 },
+            { rank_start: 3000, rank_end: 3199, avg_marks: 45.73, avg_score: 520 },
+            { rank_start: 3200, rank_end: 3399, avg_marks: 45.37, avg_score: 517 },
+            { rank_start: 3400, rank_end: 3599, avg_marks: 45.03, avg_score: 514 },
+            { rank_start: 3600, rank_end: 3799, avg_marks: 44.71, avg_score: 511 },
+            { rank_start: 3800, rank_end: 3999, avg_marks: 44.41, avg_score: 509 },
+            { rank_start: 4000, rank_end: 4199, avg_marks: 44.12, avg_score: 506 },
+            { rank_start: 4200, rank_end: 4399, avg_marks: 43.85, avg_score: 504 },
+            { rank_start: 4400, rank_end: 4599, avg_marks: 43.58, avg_score: 502 },
+            { rank_start: 4600, rank_end: 4799, avg_marks: 43.33, avg_score: 500 },
+            { rank_start: 4800, rank_end: 4999, avg_marks: 43.09, avg_score: 498 },
+            { rank_start: 5000, rank_end: 5199, avg_marks: 42.86, avg_score: 496 },
+            { rank_start: 5200, rank_end: 5399, avg_marks: 42.64, avg_score: 494 },
+            { rank_start: 5400, rank_end: 5599, avg_marks: 42.43, avg_score: 493 },
+            { rank_start: 5600, rank_end: 5799, avg_marks: 42.22, avg_score: 491 },
+            { rank_start: 5800, rank_end: 5999, avg_marks: 42.03, avg_score: 489 },
+            { rank_start: 6000, rank_end: 6199, avg_marks: 41.83, avg_score: 488 },
+            { rank_start: 6200, rank_end: 6399, avg_marks: 41.65, avg_score: 486 },
+            { rank_start: 6400, rank_end: 6599, avg_marks: 41.47, avg_score: 485 },
+            { rank_start: 6600, rank_end: 6799, avg_marks: 41.29, avg_score: 483 },
+            { rank_start: 6800, rank_end: 6999, avg_marks: 41.12, avg_score: 482 },
+            { rank_start: 7000, rank_end: 7199, avg_marks: 40.96, avg_score: 481 },
+            { rank_start: 7200, rank_end: 7399, avg_marks: 40.8, avg_score: 479 },
+            { rank_start: 7400, rank_end: 7599, avg_marks: 40.65, avg_score: 478 },
+            { rank_start: 7600, rank_end: 7799, avg_marks: 40.49, avg_score: 477 },
+            { rank_start: 7800, rank_end: 7999, avg_marks: 40.35, avg_score: 475 },
+            { rank_start: 8000, rank_end: 8199, avg_marks: 40.2, avg_score: 474 },
+            { rank_start: 8200, rank_end: 8399, avg_marks: 40.06, avg_score: 473 },
+            { rank_start: 8400, rank_end: 8599, avg_marks: 39.92, avg_score: 472 },
+            { rank_start: 8600, rank_end: 8799, avg_marks: 39.79, avg_score: 471 },
+            { rank_start: 8800, rank_end: 8999, avg_marks: 39.66, avg_score: 470 },
+            { rank_start: 9000, rank_end: 9199, avg_marks: 39.53, avg_score: 469 },
+            { rank_start: 9200, rank_end: 9399, avg_marks: 39.41, avg_score: 468 },
+            { rank_start: 9400, rank_end: 9599, avg_marks: 39.28, avg_score: 467 },
+            { rank_start: 9600, rank_end: 9799, avg_marks: 39.16, avg_score: 466 },
+            { rank_start: 9800, rank_end: 9999, avg_marks: 39.05, avg_score: 465 },
+            { rank_start: 10000, rank_end: 10199, avg_marks: 38.93, avg_score: 464 },
+            { rank_start: 10200, rank_end: 10399, avg_marks: 38.82, avg_score: 463 },
+            { rank_start: 10400, rank_end: 10599, avg_marks: 38.71, avg_score: 462 },
+            { rank_start: 10600, rank_end: 10799, avg_marks: 38.6, avg_score: 461 },
+            { rank_start: 10800, rank_end: 10999, avg_marks: 38.49, avg_score: 460 },
+            { rank_start: 11000, rank_end: 11199, avg_marks: 38.39, avg_score: 459 },
+            { rank_start: 11200, rank_end: 11399, avg_marks: 38.29, avg_score: 459 },
+            { rank_start: 11400, rank_end: 11599, avg_marks: 38.19, avg_score: 458 },
+            { rank_start: 11600, rank_end: 11799, avg_marks: 38.09, avg_score: 457 },
+            { rank_start: 11800, rank_end: 11999, avg_marks: 37.99, avg_score: 456 },
+            { rank_start: 12000, rank_end: 12199, avg_marks: 37.89, avg_score: 455 },
+            { rank_start: 12200, rank_end: 12399, avg_marks: 37.8, avg_score: 455 },
+            { rank_start: 12400, rank_end: 12599, avg_marks: 37.71, avg_score: 454 },
+            { rank_start: 12600, rank_end: 12799, avg_marks: 37.61, avg_score: 453 },
+            { rank_start: 12800, rank_end: 12999, avg_marks: 37.52, avg_score: 452 },
+            { rank_start: 13000, rank_end: 13199, avg_marks: 37.44, avg_score: 452 },
+            { rank_start: 13200, rank_end: 13399, avg_marks: 37.35, avg_score: 451 },
+            { rank_start: 13400, rank_end: 13599, avg_marks: 37.26, avg_score: 450 },
+            { rank_start: 13600, rank_end: 13799, avg_marks: 37.18, avg_score: 449 },
+            { rank_start: 13800, rank_end: 13999, avg_marks: 37.09, avg_score: 449 },
+            { rank_start: 14000, rank_end: 14199, avg_marks: 37.01, avg_score: 448 },
+            { rank_start: 14200, rank_end: 14399, avg_marks: 36.93, avg_score: 447 },
+            { rank_start: 14400, rank_end: 14599, avg_marks: 36.85, avg_score: 447 },
+            { rank_start: 14600, rank_end: 14799, avg_marks: 36.77, avg_score: 446 },
+            { rank_start: 14800, rank_end: 14999, avg_marks: 36.69, avg_score: 445 },
+            { rank_start: 15000, rank_end: 15199, avg_marks: 36.62, avg_score: 445 },
+            { rank_start: 15200, rank_end: 15399, avg_marks: 36.54, avg_score: 444 },
+            { rank_start: 15400, rank_end: 15599, avg_marks: 36.47, avg_score: 444 },
+            { rank_start: 15600, rank_end: 15799, avg_marks: 36.39, avg_score: 443 },
+            { rank_start: 15800, rank_end: 15999, avg_marks: 36.32, avg_score: 442 },
+            { rank_start: 16000, rank_end: 16199, avg_marks: 36.25, avg_score: 442 },
+            { rank_start: 16200, rank_end: 16399, avg_marks: 36.18, avg_score: 441 },
+            { rank_start: 16400, rank_end: 16599, avg_marks: 36.11, avg_score: 441 },
+            { rank_start: 16600, rank_end: 16799, avg_marks: 36.04, avg_score: 440 },
+            { rank_start: 16800, rank_end: 16999, avg_marks: 35.97, avg_score: 440 },
+            { rank_start: 17000, rank_end: 17199, avg_marks: 35.9, avg_score: 439 },
+            { rank_start: 17200, rank_end: 17399, avg_marks: 35.83, avg_score: 438 },
+            { rank_start: 17400, rank_end: 17599, avg_marks: 35.77, avg_score: 438 },
+            { rank_start: 17600, rank_end: 17799, avg_marks: 35.7, avg_score: 437 },
+            { rank_start: 17800, rank_end: 17999, avg_marks: 35.64, avg_score: 437 },
+            { rank_start: 18000, rank_end: 18199, avg_marks: 35.57, avg_score: 436 },
+            { rank_start: 18200, rank_end: 18399, avg_marks: 35.51, avg_score: 436 },
+            { rank_start: 18400, rank_end: 18599, avg_marks: 35.45, avg_score: 435 },
+            { rank_start: 18600, rank_end: 18799, avg_marks: 35.39, avg_score: 435 },
+            { rank_start: 18800, rank_end: 18999, avg_marks: 35.33, avg_score: 434 },
+            { rank_start: 19000, rank_end: 19199, avg_marks: 35.27, avg_score: 434 },
+            { rank_start: 19200, rank_end: 19399, avg_marks: 35.21, avg_score: 433 },
+            { rank_start: 19400, rank_end: 19599, avg_marks: 35.15, avg_score: 433 },
+            { rank_start: 19600, rank_end: 19799, avg_marks: 35.09, avg_score: 432 },
+            { rank_start: 19800, rank_end: 20000, avg_marks: 35.03, avg_score: 432 }
+        ];
+
+        // ECE Data from CSV
+        const eceRanges = [
+            { rank_start: 1, rank_end: 199, avg_marks: 57.37, avg_score: 656 },
+            { rank_start: 200, rank_end: 399, avg_marks: 51.31, avg_score: 599 },
+            { rank_start: 400, rank_end: 599, avg_marks: 48.48, avg_score: 572 },
+            { rank_start: 600, rank_end: 799, avg_marks: 46.61, avg_score: 554 },
+            { rank_start: 800, rank_end: 999, avg_marks: 45.22, avg_score: 541 },
+            { rank_start: 1000, rank_end: 1199, avg_marks: 44.11, avg_score: 531 },
+            { rank_start: 1200, rank_end: 1399, avg_marks: 43.18, avg_score: 522 },
+            { rank_start: 1400, rank_end: 1599, avg_marks: 42.38, avg_score: 514 },
+            { rank_start: 1600, rank_end: 1799, avg_marks: 41.69, avg_score: 508 },
+            { rank_start: 1800, rank_end: 1999, avg_marks: 41.07, avg_score: 502 },
+            { rank_start: 2000, rank_end: 2199, avg_marks: 40.52, avg_score: 497 },
+            { rank_start: 2200, rank_end: 2399, avg_marks: 40.01, avg_score: 492 },
+            { rank_start: 2400, rank_end: 2599, avg_marks: 39.55, avg_score: 487 },
+            { rank_start: 2600, rank_end: 2799, avg_marks: 39.12, avg_score: 483 },
+            { rank_start: 2800, rank_end: 2999, avg_marks: 38.72, avg_score: 480 },
+            { rank_start: 3000, rank_end: 3199, avg_marks: 38.35, avg_score: 476 },
+            { rank_start: 3200, rank_end: 3399, avg_marks: 38.01, avg_score: 473 },
+            { rank_start: 3400, rank_end: 3599, avg_marks: 37.68, avg_score: 470 },
+            { rank_start: 3600, rank_end: 3799, avg_marks: 37.37, avg_score: 467 },
+            { rank_start: 3800, rank_end: 3999, avg_marks: 37.08, avg_score: 464 },
+            { rank_start: 4000, rank_end: 4199, avg_marks: 36.8, avg_score: 461 },
+            { rank_start: 4200, rank_end: 4399, avg_marks: 36.54, avg_score: 459 },
+            { rank_start: 4400, rank_end: 4599, avg_marks: 36.28, avg_score: 457 },
+            { rank_start: 4600, rank_end: 4799, avg_marks: 36.04, avg_score: 454 },
+            { rank_start: 4800, rank_end: 4999, avg_marks: 35.81, avg_score: 452 },
+            { rank_start: 5000, rank_end: 5199, avg_marks: 35.59, avg_score: 450 },
+            { rank_start: 5200, rank_end: 5399, avg_marks: 35.38, avg_score: 448 },
+            { rank_start: 5400, rank_end: 5599, avg_marks: 35.17, avg_score: 446 },
+            { rank_start: 5600, rank_end: 5799, avg_marks: 34.97, avg_score: 444 },
+            { rank_start: 5800, rank_end: 5999, avg_marks: 34.78, avg_score: 442 },
+            { rank_start: 6000, rank_end: 6199, avg_marks: 34.59, avg_score: 440 },
+            { rank_start: 6200, rank_end: 6399, avg_marks: 34.42, avg_score: 439 },
+            { rank_start: 6400, rank_end: 6599, avg_marks: 34.24, avg_score: 437 },
+            { rank_start: 6600, rank_end: 6799, avg_marks: 34.07, avg_score: 436 },
+            { rank_start: 6800, rank_end: 6999, avg_marks: 33.91, avg_score: 434 },
+            { rank_start: 7000, rank_end: 7199, avg_marks: 33.75, avg_score: 432 },
+            { rank_start: 7200, rank_end: 7399, avg_marks: 33.6, avg_score: 431 },
+            { rank_start: 7400, rank_end: 7599, avg_marks: 33.45, avg_score: 430 },
+            { rank_start: 7600, rank_end: 7799, avg_marks: 33.3, avg_score: 428 },
+            { rank_start: 7800, rank_end: 7999, avg_marks: 33.16, avg_score: 427 },
+            { rank_start: 8000, rank_end: 8199, avg_marks: 33.02, avg_score: 426 },
+            { rank_start: 8200, rank_end: 8399, avg_marks: 32.88, avg_score: 424 },
+            { rank_start: 8400, rank_end: 8599, avg_marks: 32.75, avg_score: 423 },
+            { rank_start: 8600, rank_end: 8799, avg_marks: 32.62, avg_score: 422 },
+            { rank_start: 8800, rank_end: 8999, avg_marks: 32.5, avg_score: 421 },
+            { rank_start: 9000, rank_end: 9199, avg_marks: 32.37, avg_score: 419 },
+            { rank_start: 9200, rank_end: 9399, avg_marks: 32.25, avg_score: 418 },
+            { rank_start: 9400, rank_end: 9599, avg_marks: 32.13, avg_score: 417 },
+            { rank_start: 9600, rank_end: 9799, avg_marks: 32.02, avg_score: 416 },
+            { rank_start: 9800, rank_end: 9999, avg_marks: 31.91, avg_score: 415 },
+            { rank_start: 10000, rank_end: 10199, avg_marks: 31.79, avg_score: 414 },
+            { rank_start: 10200, rank_end: 10399, avg_marks: 31.69, avg_score: 413 },
+            { rank_start: 10400, rank_end: 10599, avg_marks: 31.58, avg_score: 412 },
+            { rank_start: 10600, rank_end: 10799, avg_marks: 31.47, avg_score: 411 },
+            { rank_start: 10800, rank_end: 10999, avg_marks: 31.37, avg_score: 410 },
+            { rank_start: 11000, rank_end: 11199, avg_marks: 31.27, avg_score: 409 },
+            { rank_start: 11200, rank_end: 11399, avg_marks: 31.17, avg_score: 408 },
+            { rank_start: 11400, rank_end: 11599, avg_marks: 31.07, avg_score: 407 },
+            { rank_start: 11600, rank_end: 11799, avg_marks: 30.98, avg_score: 406 },
+            { rank_start: 11800, rank_end: 11999, avg_marks: 30.88, avg_score: 405 },
+            { rank_start: 12000, rank_end: 12199, avg_marks: 30.79, avg_score: 404 },
+            { rank_start: 12200, rank_end: 12399, avg_marks: 30.7, avg_score: 404 },
+            { rank_start: 12400, rank_end: 12599, avg_marks: 30.61, avg_score: 403 },
+            { rank_start: 12600, rank_end: 12799, avg_marks: 30.52, avg_score: 402 },
+            { rank_start: 12800, rank_end: 12999, avg_marks: 30.44, avg_score: 401 },
+            { rank_start: 13000, rank_end: 13199, avg_marks: 30.35, avg_score: 400 },
+            { rank_start: 13200, rank_end: 13399, avg_marks: 30.27, avg_score: 399 },
+            { rank_start: 13400, rank_end: 13599, avg_marks: 30.18, avg_score: 399 },
+            { rank_start: 13600, rank_end: 13799, avg_marks: 30.1, avg_score: 398 },
+            { rank_start: 13800, rank_end: 13999, avg_marks: 30.02, avg_score: 397 },
+            { rank_start: 14000, rank_end: 14199, avg_marks: 29.94, avg_score: 396 },
+            { rank_start: 14200, rank_end: 14399, avg_marks: 29.86, avg_score: 396 },
+            { rank_start: 14400, rank_end: 14599, avg_marks: 29.79, avg_score: 395 },
+            { rank_start: 14600, rank_end: 14799, avg_marks: 29.71, avg_score: 394 },
+            { rank_start: 14800, rank_end: 14999, avg_marks: 29.63, avg_score: 393 },
+            { rank_start: 15000, rank_end: 15199, avg_marks: 29.56, avg_score: 393 },
+            { rank_start: 15200, rank_end: 15399, avg_marks: 29.49, avg_score: 392 },
+            { rank_start: 15400, rank_end: 15599, avg_marks: 29.42, avg_score: 391 },
+            { rank_start: 15600, rank_end: 15799, avg_marks: 29.34, avg_score: 391 },
+            { rank_start: 15800, rank_end: 15999, avg_marks: 29.27, avg_score: 390 },
+            { rank_start: 16000, rank_end: 16199, avg_marks: 29.2, avg_score: 389 },
+            { rank_start: 16200, rank_end: 16399, avg_marks: 29.14, avg_score: 389 },
+            { rank_start: 16400, rank_end: 16599, avg_marks: 29.07, avg_score: 388 },
+            { rank_start: 16600, rank_end: 16799, avg_marks: 29.0, avg_score: 387 },
+            { rank_start: 16800, rank_end: 16999, avg_marks: 28.94, avg_score: 387 },
+            { rank_start: 17000, rank_end: 17199, avg_marks: 28.87, avg_score: 386 },
+            { rank_start: 17200, rank_end: 17399, avg_marks: 28.81, avg_score: 386 },
+            { rank_start: 17400, rank_end: 17599, avg_marks: 28.74, avg_score: 385 },
+            { rank_start: 17600, rank_end: 17799, avg_marks: 28.68, avg_score: 384 },
+            { rank_start: 17800, rank_end: 17999, avg_marks: 28.62, avg_score: 384 },
+            { rank_start: 18000, rank_end: 18199, avg_marks: 28.55, avg_score: 383 },
+            { rank_start: 18200, rank_end: 18399, avg_marks: 28.49, avg_score: 383 },
+            { rank_start: 18400, rank_end: 18599, avg_marks: 28.43, avg_score: 382 },
+            { rank_start: 18600, rank_end: 18799, avg_marks: 28.37, avg_score: 381 },
+            { rank_start: 18800, rank_end: 18999, avg_marks: 28.31, avg_score: 381 },
+            { rank_start: 19000, rank_end: 19199, avg_marks: 28.26, avg_score: 380 },
+            { rank_start: 19200, rank_end: 19399, avg_marks: 28.2, avg_score: 380 },
+            { rank_start: 19400, rank_end: 19599, avg_marks: 28.14, avg_score: 379 },
+            { rank_start: 19600, rank_end: 19799, avg_marks: 28.08, avg_score: 379 },
+            { rank_start: 19800, rank_end: 20000, avg_marks: 28.03, avg_score: 378 }
+        ];
+
+        // EE Data from CSV
+        const eeRanges = [
+            { rank_start: 1, rank_end: 199, avg_marks: 58.44, avg_score: 656 },
+            { rank_start: 200, rank_end: 399, avg_marks: 52.16, avg_score: 598 },
+            { rank_start: 400, rank_end: 599, avg_marks: 49.23, avg_score: 572 },
+            { rank_start: 600, rank_end: 799, avg_marks: 47.29, avg_score: 554 },
+            { rank_start: 800, rank_end: 999, avg_marks: 45.85, avg_score: 541 },
+            { rank_start: 1000, rank_end: 1199, avg_marks: 44.69, avg_score: 530 },
+            { rank_start: 1200, rank_end: 1399, avg_marks: 43.73, avg_score: 521 },
+            { rank_start: 1400, rank_end: 1599, avg_marks: 42.91, avg_score: 514 },
+            { rank_start: 1600, rank_end: 1799, avg_marks: 42.19, avg_score: 507 },
+            { rank_start: 1800, rank_end: 1999, avg_marks: 41.55, avg_score: 501 },
+            { rank_start: 2000, rank_end: 2199, avg_marks: 40.97, avg_score: 496 },
+            { rank_start: 2200, rank_end: 2399, avg_marks: 40.45, avg_score: 491 },
+            { rank_start: 2400, rank_end: 2599, avg_marks: 39.97, avg_score: 487 },
+            { rank_start: 2600, rank_end: 2799, avg_marks: 39.52, avg_score: 483 },
+            { rank_start: 2800, rank_end: 2999, avg_marks: 39.11, avg_score: 479 },
+            { rank_start: 3000, rank_end: 3199, avg_marks: 38.73, avg_score: 475 },
+            { rank_start: 3200, rank_end: 3399, avg_marks: 38.37, avg_score: 472 },
+            { rank_start: 3400, rank_end: 3599, avg_marks: 38.03, avg_score: 469 },
+            { rank_start: 3600, rank_end: 3799, avg_marks: 37.71, avg_score: 466 },
+            { rank_start: 3800, rank_end: 3999, avg_marks: 37.41, avg_score: 463 },
+            { rank_start: 4000, rank_end: 4199, avg_marks: 37.12, avg_score: 461 },
+            { rank_start: 4200, rank_end: 4399, avg_marks: 36.85, avg_score: 458 },
+            { rank_start: 4400, rank_end: 4599, avg_marks: 36.58, avg_score: 456 },
+            { rank_start: 4600, rank_end: 4799, avg_marks: 36.33, avg_score: 453 },
+            { rank_start: 4800, rank_end: 4999, avg_marks: 36.09, avg_score: 451 },
+            { rank_start: 5000, rank_end: 5199, avg_marks: 35.86, avg_score: 449 },
+            { rank_start: 5200, rank_end: 5399, avg_marks: 35.64, avg_score: 447 },
+            { rank_start: 5400, rank_end: 5599, avg_marks: 35.43, avg_score: 445 },
+            { rank_start: 5600, rank_end: 5799, avg_marks: 35.22, avg_score: 443 },
+            { rank_start: 5800, rank_end: 5999, avg_marks: 35.03, avg_score: 441 },
+            { rank_start: 6000, rank_end: 6199, avg_marks: 34.83, avg_score: 440 },
+            { rank_start: 6200, rank_end: 6399, avg_marks: 34.65, avg_score: 438 },
+            { rank_start: 6400, rank_end: 6599, avg_marks: 34.47, avg_score: 436 },
+            { rank_start: 6600, rank_end: 6799, avg_marks: 34.29, avg_score: 435 },
+            { rank_start: 6800, rank_end: 6999, avg_marks: 34.12, avg_score: 433 },
+            { rank_start: 7000, rank_end: 7199, avg_marks: 33.96, avg_score: 432 },
+            { rank_start: 7200, rank_end: 7399, avg_marks: 33.8, avg_score: 430 },
+            { rank_start: 7400, rank_end: 7599, avg_marks: 33.65, avg_score: 429 },
+            { rank_start: 7600, rank_end: 7799, avg_marks: 33.49, avg_score: 427 },
+            { rank_start: 7800, rank_end: 7999, avg_marks: 33.35, avg_score: 426 },
+            { rank_start: 8000, rank_end: 8199, avg_marks: 33.2, avg_score: 425 },
+            { rank_start: 8200, rank_end: 8399, avg_marks: 33.06, avg_score: 423 },
+            { rank_start: 8400, rank_end: 8599, avg_marks: 32.92, avg_score: 422 },
+            { rank_start: 8600, rank_end: 8799, avg_marks: 32.79, avg_score: 421 },
+            { rank_start: 8800, rank_end: 8999, avg_marks: 32.66, avg_score: 420 },
+            { rank_start: 9000, rank_end: 9199, avg_marks: 32.53, avg_score: 419 },
+            { rank_start: 9200, rank_end: 9399, avg_marks: 32.41, avg_score: 417 },
+            { rank_start: 9400, rank_end: 9599, avg_marks: 32.28, avg_score: 416 },
+            { rank_start: 9600, rank_end: 9799, avg_marks: 32.16, avg_score: 415 },
+            { rank_start: 9800, rank_end: 9999, avg_marks: 32.05, avg_score: 414 },
+            { rank_start: 10000, rank_end: 10199, avg_marks: 31.93, avg_score: 413 },
+            { rank_start: 10200, rank_end: 10399, avg_marks: 31.82, avg_score: 412 },
+            { rank_start: 10400, rank_end: 10599, avg_marks: 31.71, avg_score: 411 },
+            { rank_start: 10600, rank_end: 10799, avg_marks: 31.6, avg_score: 410 },
+            { rank_start: 10800, rank_end: 10999, avg_marks: 31.49, avg_score: 409 },
+            { rank_start: 11000, rank_end: 11199, avg_marks: 31.39, avg_score: 408 },
+            { rank_start: 11200, rank_end: 11399, avg_marks: 31.29, avg_score: 407 },
+            { rank_start: 11400, rank_end: 11599, avg_marks: 31.19, avg_score: 406 },
+            { rank_start: 11600, rank_end: 11799, avg_marks: 31.09, avg_score: 405 },
+            { rank_start: 11800, rank_end: 11999, avg_marks: 30.99, avg_score: 404 },
+            { rank_start: 12000, rank_end: 12199, avg_marks: 30.89, avg_score: 404 },
+            { rank_start: 12200, rank_end: 12399, avg_marks: 30.8, avg_score: 403 },
+            { rank_start: 12400, rank_end: 12599, avg_marks: 30.71, avg_score: 402 },
+            { rank_start: 12600, rank_end: 12799, avg_marks: 30.61, avg_score: 401 },
+            { rank_start: 12800, rank_end: 12999, avg_marks: 30.52, avg_score: 400 },
+            { rank_start: 13000, rank_end: 13199, avg_marks: 30.44, avg_score: 399 },
+            { rank_start: 13200, rank_end: 13399, avg_marks: 30.35, avg_score: 399 },
+            { rank_start: 13400, rank_end: 13599, avg_marks: 30.26, avg_score: 398 },
+            { rank_start: 13600, rank_end: 13799, avg_marks: 30.18, avg_score: 397 },
+            { rank_start: 13800, rank_end: 13999, avg_marks: 30.09, avg_score: 396 },
+            { rank_start: 14000, rank_end: 14199, avg_marks: 30.01, avg_score: 395 },
+            { rank_start: 14200, rank_end: 14399, avg_marks: 29.93, avg_score: 395 },
+            { rank_start: 14400, rank_end: 14599, avg_marks: 29.85, avg_score: 394 },
+            { rank_start: 14600, rank_end: 14799, avg_marks: 29.77, avg_score: 393 },
+            { rank_start: 14800, rank_end: 14999, avg_marks: 29.69, avg_score: 393 },
+            { rank_start: 15000, rank_end: 15199, avg_marks: 29.62, avg_score: 392 },
+            { rank_start: 15200, rank_end: 15399, avg_marks: 29.54, avg_score: 391 },
+            { rank_start: 15400, rank_end: 15599, avg_marks: 29.47, avg_score: 390 },
+            { rank_start: 15600, rank_end: 15799, avg_marks: 29.39, avg_score: 390 },
+            { rank_start: 15800, rank_end: 15999, avg_marks: 29.32, avg_score: 389 },
+            { rank_start: 16000, rank_end: 16199, avg_marks: 29.25, avg_score: 388 },
+            { rank_start: 16200, rank_end: 16399, avg_marks: 29.18, avg_score: 388 },
+            { rank_start: 16400, rank_end: 16599, avg_marks: 29.11, avg_score: 387 },
+            { rank_start: 16600, rank_end: 16799, avg_marks: 29.04, avg_score: 387 },
+            { rank_start: 16800, rank_end: 16999, avg_marks: 28.97, avg_score: 386 },
+            { rank_start: 17000, rank_end: 17199, avg_marks: 28.9, avg_score: 385 },
+            { rank_start: 17200, rank_end: 17399, avg_marks: 28.83, avg_score: 385 },
+            { rank_start: 17400, rank_end: 17599, avg_marks: 28.77, avg_score: 384 },
+            { rank_start: 17600, rank_end: 17799, avg_marks: 28.7, avg_score: 383 },
+            { rank_start: 17800, rank_end: 17999, avg_marks: 28.64, avg_score: 383 },
+            { rank_start: 18000, rank_end: 18199, avg_marks: 28.57, avg_score: 382 },
+            { rank_start: 18200, rank_end: 18399, avg_marks: 28.51, avg_score: 382 },
+            { rank_start: 18400, rank_end: 18599, avg_marks: 28.45, avg_score: 381 },
+            { rank_start: 18600, rank_end: 18799, avg_marks: 28.39, avg_score: 381 },
+            { rank_start: 18800, rank_end: 18999, avg_marks: 28.33, avg_score: 380 },
+            { rank_start: 19000, rank_end: 19199, avg_marks: 28.27, avg_score: 379 },
+            { rank_start: 19200, rank_end: 19399, avg_marks: 28.21, avg_score: 379 },
+            { rank_start: 19400, rank_end: 19599, avg_marks: 28.15, avg_score: 378 },
+            { rank_start: 19600, rank_end: 19799, avg_marks: 28.09, avg_score: 378 },
+            { rank_start: 19800, rank_end: 20000, avg_marks: 28.03, avg_score: 377 }
+        ];
+
+        // ME Data from CSV
+        const meRanges = [
+            { rank_start: 1, rank_end: 199, avg_marks: 60.44, avg_score: 664 },
+            { rank_start: 200, rank_end: 399, avg_marks: 54.16, avg_score: 608 },
+            { rank_start: 400, rank_end: 599, avg_marks: 51.23, avg_score: 582 },
+            { rank_start: 600, rank_end: 799, avg_marks: 49.29, avg_score: 565 },
+            { rank_start: 800, rank_end: 999, avg_marks: 47.85, avg_score: 552 },
+            { rank_start: 1000, rank_end: 1199, avg_marks: 46.69, avg_score: 542 },
+            { rank_start: 1200, rank_end: 1399, avg_marks: 45.73, avg_score: 533 },
+            { rank_start: 1400, rank_end: 1599, avg_marks: 44.91, avg_score: 526 },
+            { rank_start: 1600, rank_end: 1799, avg_marks: 44.19, avg_score: 520 },
+            { rank_start: 1800, rank_end: 1999, avg_marks: 43.55, avg_score: 514 },
+            { rank_start: 2000, rank_end: 2199, avg_marks: 42.97, avg_score: 509 },
+            { rank_start: 2200, rank_end: 2399, avg_marks: 42.45, avg_score: 504 },
+            { rank_start: 2400, rank_end: 2599, avg_marks: 41.97, avg_score: 500 },
+            { rank_start: 2600, rank_end: 2799, avg_marks: 41.52, avg_score: 496 },
+            { rank_start: 2800, rank_end: 2999, avg_marks: 41.11, avg_score: 492 },
+            { rank_start: 3000, rank_end: 3199, avg_marks: 40.73, avg_score: 489 },
+            { rank_start: 3200, rank_end: 3399, avg_marks: 40.37, avg_score: 486 },
+            { rank_start: 3400, rank_end: 3599, avg_marks: 40.03, avg_score: 483 },
+            { rank_start: 3600, rank_end: 3799, avg_marks: 39.71, avg_score: 480 },
+            { rank_start: 3800, rank_end: 3999, avg_marks: 39.41, avg_score: 477 },
+            { rank_start: 4000, rank_end: 4199, avg_marks: 39.12, avg_score: 475 },
+            { rank_start: 4200, rank_end: 4399, avg_marks: 38.85, avg_score: 472 },
+            { rank_start: 4400, rank_end: 4599, avg_marks: 38.58, avg_score: 470 },
+            { rank_start: 4600, rank_end: 4799, avg_marks: 38.33, avg_score: 468 },
+            { rank_start: 4800, rank_end: 4999, avg_marks: 38.09, avg_score: 466 },
+            { rank_start: 5000, rank_end: 5199, avg_marks: 37.86, avg_score: 464 },
+            { rank_start: 5200, rank_end: 5399, avg_marks: 37.64, avg_score: 462 },
+            { rank_start: 5400, rank_end: 5599, avg_marks: 37.43, avg_score: 460 },
+            { rank_start: 5600, rank_end: 5799, avg_marks: 37.22, avg_score: 458 },
+            { rank_start: 5800, rank_end: 5999, avg_marks: 37.03, avg_score: 456 },
+            { rank_start: 6000, rank_end: 6199, avg_marks: 36.83, avg_score: 454 },
+            { rank_start: 6200, rank_end: 6399, avg_marks: 36.65, avg_score: 453 },
+            { rank_start: 6400, rank_end: 6599, avg_marks: 36.47, avg_score: 451 },
+            { rank_start: 6600, rank_end: 6799, avg_marks: 36.29, avg_score: 450 },
+            { rank_start: 6800, rank_end: 6999, avg_marks: 36.12, avg_score: 448 },
+            { rank_start: 7000, rank_end: 7199, avg_marks: 35.96, avg_score: 447 },
+            { rank_start: 7200, rank_end: 7399, avg_marks: 35.8, avg_score: 445 },
+            { rank_start: 7400, rank_end: 7599, avg_marks: 35.65, avg_score: 444 },
+            { rank_start: 7600, rank_end: 7799, avg_marks: 35.49, avg_score: 443 },
+            { rank_start: 7800, rank_end: 7999, avg_marks: 35.35, avg_score: 441 },
+            { rank_start: 8000, rank_end: 8199, avg_marks: 35.2, avg_score: 440 },
+            { rank_start: 8200, rank_end: 8399, avg_marks: 35.06, avg_score: 439 },
+            { rank_start: 8400, rank_end: 8599, avg_marks: 34.92, avg_score: 438 },
+            { rank_start: 8600, rank_end: 8799, avg_marks: 34.79, avg_score: 436 },
+            { rank_start: 8800, rank_end: 8999, avg_marks: 34.66, avg_score: 435 },
+            { rank_start: 9000, rank_end: 9199, avg_marks: 34.53, avg_score: 434 },
+            { rank_start: 9200, rank_end: 9399, avg_marks: 34.41, avg_score: 433 },
+            { rank_start: 9400, rank_end: 9599, avg_marks: 34.28, avg_score: 432 },
+            { rank_start: 9600, rank_end: 9799, avg_marks: 34.16, avg_score: 431 },
+            { rank_start: 9800, rank_end: 9999, avg_marks: 34.05, avg_score: 430 },
+            { rank_start: 10000, rank_end: 10199, avg_marks: 33.93, avg_score: 429 },
+            { rank_start: 10200, rank_end: 10399, avg_marks: 33.82, avg_score: 428 },
+            { rank_start: 10400, rank_end: 10599, avg_marks: 33.71, avg_score: 427 },
+            { rank_start: 10600, rank_end: 10799, avg_marks: 33.6, avg_score: 426 },
+            { rank_start: 10800, rank_end: 10999, avg_marks: 33.49, avg_score: 425 },
+            { rank_start: 11000, rank_end: 11199, avg_marks: 33.39, avg_score: 424 },
+            { rank_start: 11200, rank_end: 11399, avg_marks: 33.29, avg_score: 423 },
+            { rank_start: 11400, rank_end: 11599, avg_marks: 33.19, avg_score: 422 },
+            { rank_start: 11600, rank_end: 11799, avg_marks: 33.09, avg_score: 421 },
+            { rank_start: 11800, rank_end: 11999, avg_marks: 32.99, avg_score: 420 },
+            { rank_start: 12000, rank_end: 12199, avg_marks: 32.89, avg_score: 420 },
+            { rank_start: 12200, rank_end: 12399, avg_marks: 32.8, avg_score: 419 },
+            { rank_start: 12400, rank_end: 12599, avg_marks: 32.71, avg_score: 418 },
+            { rank_start: 12600, rank_end: 12799, avg_marks: 32.61, avg_score: 417 },
+            { rank_start: 12800, rank_end: 12999, avg_marks: 32.52, avg_score: 416 },
+            { rank_start: 13000, rank_end: 13199, avg_marks: 32.44, avg_score: 415 },
+            { rank_start: 13200, rank_end: 13399, avg_marks: 32.35, avg_score: 415 },
+            { rank_start: 13400, rank_end: 13599, avg_marks: 32.26, avg_score: 414 },
+            { rank_start: 13600, rank_end: 13799, avg_marks: 32.18, avg_score: 413 },
+            { rank_start: 13800, rank_end: 13999, avg_marks: 32.09, avg_score: 412 },
+            { rank_start: 14000, rank_end: 14199, avg_marks: 32.01, avg_score: 412 },
+            { rank_start: 14200, rank_end: 14399, avg_marks: 31.93, avg_score: 411 },
+            { rank_start: 14400, rank_end: 14599, avg_marks: 31.85, avg_score: 410 },
+            { rank_start: 14600, rank_end: 14799, avg_marks: 31.77, avg_score: 410 },
+            { rank_start: 14800, rank_end: 14999, avg_marks: 31.69, avg_score: 409 },
+            { rank_start: 15000, rank_end: 15199, avg_marks: 31.62, avg_score: 408 },
+            { rank_start: 15200, rank_end: 15399, avg_marks: 31.54, avg_score: 408 },
+            { rank_start: 15400, rank_end: 15599, avg_marks: 31.47, avg_score: 407 },
+            { rank_start: 15600, rank_end: 15799, avg_marks: 31.39, avg_score: 406 },
+            { rank_start: 15800, rank_end: 15999, avg_marks: 31.32, avg_score: 406 },
+            { rank_start: 16000, rank_end: 16199, avg_marks: 31.25, avg_score: 405 },
+            { rank_start: 16200, rank_end: 16399, avg_marks: 31.18, avg_score: 404 },
+            { rank_start: 16400, rank_end: 16599, avg_marks: 31.11, avg_score: 404 },
+            { rank_start: 16600, rank_end: 16799, avg_marks: 31.04, avg_score: 403 },
+            { rank_start: 16800, rank_end: 16999, avg_marks: 30.97, avg_score: 402 },
+            { rank_start: 17000, rank_end: 17199, avg_marks: 30.9, avg_score: 402 },
+            { rank_start: 17200, rank_end: 17399, avg_marks: 30.83, avg_score: 401 },
+            { rank_start: 17400, rank_end: 17599, avg_marks: 30.77, avg_score: 401 },
+            { rank_start: 17600, rank_end: 17799, avg_marks: 30.7, avg_score: 400 },
+            { rank_start: 17800, rank_end: 17999, avg_marks: 30.64, avg_score: 400 },
+            { rank_start: 18000, rank_end: 18199, avg_marks: 30.57, avg_score: 399 },
+            { rank_start: 18200, rank_end: 18399, avg_marks: 30.51, avg_score: 398 },
+            { rank_start: 18400, rank_end: 18599, avg_marks: 30.45, avg_score: 398 },
+            { rank_start: 18600, rank_end: 18799, avg_marks: 30.39, avg_score: 397 },
+            { rank_start: 18800, rank_end: 18999, avg_marks: 30.33, avg_score: 397 },
+            { rank_start: 19000, rank_end: 19199, avg_marks: 30.27, avg_score: 396 },
+            { rank_start: 19200, rank_end: 19399, avg_marks: 30.21, avg_score: 396 },
+            { rank_start: 19400, rank_end: 19599, avg_marks: 30.15, avg_score: 395 },
+            { rank_start: 19600, rank_end: 19799, avg_marks: 30.09, avg_score: 395 },
+            { rank_start: 19800, rank_end: 20000, avg_marks: 30.03, avg_score: 394 }
+        ];
+
+        // =====================================================
+        // GENERATE POINTS FOR ALL BRANCHES (with 2026 adjustments)
+        // =====================================================
+        
+        // For branches with ±5% change, adjust rank accordingly
+        const ceAdjust = students2026["CE"] / students2025["CE"]; // 1.05 for 5% increase
+        const eeAdjust = students2026["EE"] / students2025["EE"]; // 0.95 for 5% decrease
+        const eceAdjust = students2026["ECE"] / students2025["ECE"]; // 1.05 for 5% increase
+        const meAdjust = students2026["ME"] / students2025["ME"]; // 0.95 for 5% decrease
+        const daAdjust = students2026["DA"] / students2025["DA"]; // 1.05 for 5% increase
+
         const branchRankData = {
-            // CSE with 12% competition increase
+            // CSE with 12% increase
             "CS": getCSE2026Data(),
             
-            // Civil Engineering (CE) - Realistic data
-            "CE": [
-                { rank: 1, marks: 85.50, score: 920 },
-                { rank: 10, marks: 80.20, score: 890 },
-                { rank: 50, marks: 74.30, score: 850 },
-                { rank: 100, marks: 70.10, score: 820 },
-                { rank: 200, marks: 65.40, score: 780 },
-                { rank: 500, marks: 58.20, score: 720 },
-                { rank: 1000, marks: 52.80, score: 670 },
-                { rank: 2000, marks: 46.50, score: 610 },
-                { rank: 3000, marks: 42.30, score: 570 },
-                { rank: 5000, marks: 37.80, score: 520 },
-                { rank: 8000, marks: 33.20, score: 470 },
-                { rank: 10000, marks: 30.50, score: 440 },
-                { rank: 15000, marks: 26.40, score: 390 },
-                { rank: 20000, marks: 23.10, score: 350 },
-                { rank: 25000, marks: 20.30, score: 320 },
-                { rank: 30000, marks: 17.80, score: 290 },
-                { rank: 35000, marks: 15.50, score: 260 },
-                { rank: 40000, marks: 13.40, score: 235 },
-                { rank: 45000, marks: 11.50, score: 210 },
-                { rank: 50000, marks: 9.80, score: 185 },
-                { rank: 55000, marks: 8.20, score: 160 },
-                { rank: 60000, marks: 6.70, score: 135 },
-                { rank: 65000, marks: 5.30, score: 110 },
-                { rank: 70000, marks: 4.00, score: 85 },
-                { rank: 75000, marks: 2.80, score: 60 },
-                { rank: 79950, marks: 1.50, score: 35 }
-            ],
+            // CE with 5% increase
+            "CE": convertRangeToPoints(ceRanges, "CE", ceAdjust),
             
-            // Mechanical Engineering (ME) - Realistic data
-            "ME": [
-                { rank: 1, marks: 84.90, score: 915 },
-                { rank: 10, marks: 79.80, score: 885 },
-                { rank: 50, marks: 73.90, score: 845 },
-                { rank: 100, marks: 69.70, score: 815 },
-                { rank: 200, marks: 64.90, score: 775 },
-                { rank: 500, marks: 57.60, score: 715 },
-                { rank: 1000, marks: 52.10, score: 665 },
-                { rank: 2000, marks: 45.80, score: 605 },
-                { rank: 3000, marks: 41.60, score: 565 },
-                { rank: 5000, marks: 37.10, score: 515 },
-                { rank: 8000, marks: 32.50, score: 465 },
-                { rank: 10000, marks: 29.80, score: 435 },
-                { rank: 15000, marks: 25.70, score: 385 },
-                { rank: 20000, marks: 22.40, score: 345 },
-                { rank: 25000, marks: 19.60, score: 315 },
-                { rank: 30000, marks: 17.10, score: 285 },
-                { rank: 35000, marks: 14.80, score: 255 },
-                { rank: 40000, marks: 12.70, score: 230 },
-                { rank: 45000, marks: 10.80, score: 205 },
-                { rank: 50000, marks: 9.10, score: 180 },
-                { rank: 55000, marks: 7.50, score: 155 },
-                { rank: 60000, marks: 6.00, score: 130 },
-                { rank: 62045, marks: 5.00, score: 115 }
-            ],
+            // EE with 5% decrease
+            "EE": convertRangeToPoints(eeRanges, "EE", eeAdjust),
             
-            // Electrical Engineering (EE) - Realistic data
-            "EE": [
-                { rank: 1, marks: 87.20, score: 930 },
-                { rank: 10, marks: 82.10, score: 900 },
-                { rank: 50, marks: 76.20, score: 860 },
-                { rank: 100, marks: 71.90, score: 830 },
-                { rank: 200, marks: 67.10, score: 790 },
-                { rank: 500, marks: 59.80, score: 730 },
-                { rank: 1000, marks: 54.30, score: 680 },
-                { rank: 2000, marks: 48.00, score: 620 },
-                { rank: 3000, marks: 43.80, score: 580 },
-                { rank: 5000, marks: 39.30, score: 530 },
-                { rank: 8000, marks: 34.70, score: 480 },
-                { rank: 10000, marks: 32.00, score: 450 },
-                { rank: 15000, marks: 27.90, score: 400 },
-                { rank: 20000, marks: 24.60, score: 360 },
-                { rank: 25000, marks: 21.80, score: 330 },
-                { rank: 30000, marks: 19.30, score: 300 },
-                { rank: 35000, marks: 17.00, score: 270 },
-                { rank: 40000, marks: 14.90, score: 245 },
-                { rank: 45000, marks: 13.00, score: 220 },
-                { rank: 50000, marks: 11.30, score: 195 },
-                { rank: 55000, marks: 9.70, score: 170 },
-                { rank: 60000, marks: 8.20, score: 145 },
-                { rank: 65000, marks: 6.80, score: 120 },
-                { rank: 70000, marks: 5.50, score: 95 },
-                { rank: 75000, marks: 4.30, score: 70 },
-                { rank: 80000, marks: 3.10, score: 45 },
-                { rank: 81470, marks: 2.00, score: 30 }
-            ],
+            // ECE with 5% increase
+            "ECE": convertRangeToPoints(eceRanges, "ECE", eceAdjust),
             
-            // Electronics & Communication (ECE) - Realistic data
-            "ECE": [
-                { rank: 1, marks: 86.80, score: 925 },
-                { rank: 10, marks: 81.70, score: 895 },
-                { rank: 50, marks: 75.80, score: 855 },
-                { rank: 100, marks: 71.50, score: 825 },
-                { rank: 200, marks: 66.70, score: 785 },
-                { rank: 500, marks: 59.40, score: 725 },
-                { rank: 1000, marks: 53.90, score: 675 },
-                { rank: 2000, marks: 47.60, score: 615 },
-                { rank: 3000, marks: 43.40, score: 575 },
-                { rank: 5000, marks: 38.90, score: 525 },
-                { rank: 8000, marks: 34.30, score: 475 },
-                { rank: 10000, marks: 31.60, score: 445 },
-                { rank: 15000, marks: 27.50, score: 395 },
-                { rank: 20000, marks: 24.20, score: 355 },
-                { rank: 25000, marks: 21.40, score: 325 },
-                { rank: 30000, marks: 18.90, score: 295 },
-                { rank: 35000, marks: 16.60, score: 265 },
-                { rank: 40000, marks: 14.50, score: 240 },
-                { rank: 45000, marks: 12.60, score: 215 },
-                { rank: 50000, marks: 10.90, score: 190 },
-                { rank: 55000, marks: 9.30, score: 165 },
-                { rank: 60000, marks: 7.80, score: 140 }
-            ],
+            // ME with 5% decrease
+            "ME": convertRangeToPoints(meRanges, "ME", meAdjust),
             
-            // Data Science & AI (DA) - Realistic data
-            "DA": [
-                { rank: 1, marks: 88.50, score: 940 },
-                { rank: 10, marks: 83.40, score: 910 },
-                { rank: 50, marks: 77.50, score: 870 },
-                { rank: 100, marks: 73.20, score: 840 },
-                { rank: 200, marks: 68.40, score: 800 },
-                { rank: 500, marks: 61.10, score: 740 },
-                { rank: 1000, marks: 55.60, score: 690 },
-                { rank: 2000, marks: 49.30, score: 630 },
-                { rank: 3000, marks: 45.10, score: 590 },
-                { rank: 5000, marks: 40.60, score: 540 },
-                { rank: 8000, marks: 36.00, score: 490 },
-                { rank: 10000, marks: 33.30, score: 460 },
-                { rank: 12000, marks: 31.00, score: 435 },
-                { rank: 15000, marks: 28.20, score: 405 },
-                { rank: 18000, marks: 25.70, score: 375 },
-                { rank: 20000, marks: 24.00, score: 355 },
-                { rank: 22000, marks: 22.30, score: 335 },
-                { rank: 25000, marks: 20.00, score: 305 },
-                { rank: 28000, marks: 17.50, score: 270 }
-            ]
+            // DA with 5% increase
+            "DA": convertRangeToPoints(daRanges, "DA", daAdjust)
         };
 
-        // Add data for other branches (scaled from similar branches with realistic scores)
+        // Add data for other branches (scaled from similar branches)
         branchRankData["IN"] = branchRankData["EE"].map(d => ({ 
-            rank: d.rank, 
+            rank: Math.round(d.rank * 1.0), 
             marks: d.marks * 0.96,
             score: Math.round(d.score * 0.96)
         }));
         
         branchRankData["PI"] = branchRankData["ME"].map(d => ({ 
-            rank: d.rank, 
+            rank: Math.round(d.rank * 1.0), 
             marks: d.marks * 0.95,
             score: Math.round(d.score * 0.95)
         }));
         
         branchRankData["XE"] = branchRankData["ME"].map(d => ({ 
-            rank: d.rank, 
+            rank: Math.round(d.rank * 1.0), 
             marks: d.marks * 0.92,
             score: Math.round(d.score * 0.92)
         }));
         
         branchRankData["ES"] = branchRankData["CE"].map(d => ({ 
-            rank: d.rank, 
+            rank: Math.round(d.rank * 1.0), 
             marks: d.marks * 0.90,
             score: Math.round(d.score * 0.90)
         }));
         
         branchRankData["CH"] = branchRankData["CE"].map(d => ({ 
-            rank: d.rank, 
+            rank: Math.round(d.rank * 1.0), 
             marks: d.marks * 0.94,
             score: Math.round(d.score * 0.94)
         }));
 
         // =====================================================
-        // GATE 2026 CUTOFFS (Realistic for each branch)
+        // GATE 2026 CUTOFFS (Updated based on branch difficulty)
         // =====================================================
         
         const gateCutoffs2026 = {
-            "CE": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
-            "ME": { GEN: "30-32", OBC: "27-29", SC: "20-22", ST: "20-22", PWD: "20-22", EWS: "27-29" },
-            "EE": { GEN: "24-26", OBC: "21-23", SC: "15-17", ST: "15-17", PWD: "15-17", EWS: "21-23" },
-            "ECE": { GEN: "25-27", OBC: "22-24", SC: "16-18", ST: "16-18", PWD: "16-18", EWS: "22-24" },
+            "CE": { GEN: "30-32", OBC: "27-29", SC: "20-22", ST: "20-22", PWD: "20-22", EWS: "27-29" },
+            "ME": { GEN: "32-34", OBC: "29-31", SC: "22-24", ST: "22-24", PWD: "22-24", EWS: "29-31" },
+            "EE": { GEN: "26-28", OBC: "23-25", SC: "17-19", ST: "17-19", PWD: "17-19", EWS: "23-25" },
+            "ECE": { GEN: "27-29", OBC: "24-26", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "24-26" },
             "CS": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
-            "IN": { GEN: "26-28", OBC: "23-25", SC: "17-19", ST: "17-19", PWD: "17-19", EWS: "23-25" },
-            "PI": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
-            "XE": { GEN: "27-29", OBC: "24-26", SC: "17-19", ST: "17-19", PWD: "17-19", EWS: "24-26" },
-            "ES": { GEN: "26-28", OBC: "23-25", SC: "16-18", ST: "16-18", PWD: "16-18", EWS: "23-25" },
-            "CH": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
-            "DA": { GEN: "32-34", OBC: "29-31", SC: "22-24", ST: "22-24", PWD: "22-24", EWS: "29-31" }
+            "IN": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
+            "PI": { GEN: "30-32", OBC: "27-29", SC: "20-22", ST: "20-22", PWD: "20-22", EWS: "27-29" },
+            "XE": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
+            "ES": { GEN: "28-30", OBC: "25-27", SC: "18-20", ST: "18-20", PWD: "18-20", EWS: "25-27" },
+            "CH": { GEN: "29-31", OBC: "26-28", SC: "19-21", ST: "19-21", PWD: "19-21", EWS: "26-28" },
+            "DA": { GEN: "34-36", OBC: "31-33", SC: "24-26", ST: "24-26", PWD: "24-26", EWS: "31-33" }
         };
 
         const gateCutoffsMid = {
-            "CE": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
-            "ME": { GEN: 31.0, OBC: 28.0, SC: 21.0, ST: 21.0, PWD: 21.0, EWS: 28.0 },
-            "EE": { GEN: 25.0, OBC: 22.0, SC: 16.0, ST: 16.0, PWD: 16.0, EWS: 22.0 },
-            "ECE": { GEN: 26.0, OBC: 23.0, SC: 17.0, ST: 17.0, PWD: 17.0, EWS: 23.0 },
+            "CE": { GEN: 31.0, OBC: 28.0, SC: 21.0, ST: 21.0, PWD: 21.0, EWS: 28.0 },
+            "ME": { GEN: 33.0, OBC: 30.0, SC: 23.0, ST: 23.0, PWD: 23.0, EWS: 30.0 },
+            "EE": { GEN: 27.0, OBC: 24.0, SC: 18.0, ST: 18.0, PWD: 18.0, EWS: 24.0 },
+            "ECE": { GEN: 28.0, OBC: 25.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 25.0 },
             "CS": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
-            "IN": { GEN: 27.0, OBC: 24.0, SC: 18.0, ST: 18.0, PWD: 18.0, EWS: 24.0 },
-            "PI": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
-            "XE": { GEN: 28.0, OBC: 25.0, SC: 18.0, ST: 18.0, PWD: 18.0, EWS: 25.0 },
-            "ES": { GEN: 27.0, OBC: 24.0, SC: 17.0, ST: 17.0, PWD: 17.0, EWS: 24.0 },
-            "CH": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
-            "DA": { GEN: 33.0, OBC: 30.0, SC: 23.0, ST: 23.0, PWD: 23.0, EWS: 30.0 }
+            "IN": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
+            "PI": { GEN: 31.0, OBC: 28.0, SC: 21.0, ST: 21.0, PWD: 21.0, EWS: 28.0 },
+            "XE": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
+            "ES": { GEN: 29.0, OBC: 26.0, SC: 19.0, ST: 19.0, PWD: 19.0, EWS: 26.0 },
+            "CH": { GEN: 30.0, OBC: 27.0, SC: 20.0, ST: 20.0, PWD: 20.0, EWS: 27.0 },
+            "DA": { GEN: 35.0, OBC: 32.0, SC: 25.0, ST: 25.0, PWD: 25.0, EWS: 32.0 }
         };
 
         // IIT Admission Marks by Category
@@ -1711,16 +2163,35 @@
                 { marks: "38-48", chance: "Low-Moderate", companies: "Telecom Companies" },
                 { marks: "28-38", chance: "Low", companies: "Private Electronics" },
                 { marks: "<28", chance: "Unlikely", companies: "Private Sector" }
+            ],
+            "DA": [
+                { marks: "75+", chance: "Very High", companies: "ISRO, DRDO, BARC, Google, Microsoft" },
+                { marks: "65-75", chance: "High", companies: "NTPC, ONGC, GAIL, BHEL" },
+                { marks: "55-65", chance: "Moderate", companies: "IOCL, HPCL, BPCL" },
+                { marks: "45-55", chance: "Low-Moderate", companies: "State PSUs" },
+                { marks: "35-45", chance: "Low", companies: "Private Sector" },
+                { marks: "<35", chance: "Unlikely", companies: "Private Sector" }
             ]
         };
 
         // Set default PSU data for all branches
-        psuChancesData["DA"] = psuChancesData["CS"];
         psuChancesData["IN"] = psuChancesData["EE"];
         psuChancesData["PI"] = psuChancesData["ME"];
         psuChancesData["XE"] = psuChancesData["ME"];
         psuChancesData["ES"] = psuChancesData["CE"];
         psuChancesData["CH"] = psuChancesData["CE"];
+
+        // =====================================================
+        // CSE 2026 DATA (12% competition increase)
+        // =====================================================
+        
+        function getCSE2026Data() {
+            return cse2025Data.map(point => ({
+                rank: Math.round(point.rank * 1.12),
+                marks: point.marks,
+                score: point.score
+            }));
+        }
 
         let rankChart = null;
         let currentCategory = 'GEN';
@@ -1819,7 +2290,7 @@
         // Calculate rank from marks using interpolation
         function calculateRankFromMarks(marks, paper) {
             const data = branchRankData[paper] || branchRankData["CS"];
-            const totalCandidates = totalStudents[paper] || totalStudents["CS"];
+            const totalCandidates = students2026[paper] || students2026["CS"];
             
             // Sort data by marks descending
             const sortedData = [...data].sort((a, b) => b.marks - a.marks);
@@ -1876,7 +2347,7 @@
 
         // Calculate percentile
         function calculatePercentile(rank, paper) {
-            const totalCandidates = totalStudents[paper] || totalStudents["CS"];
+            const totalCandidates = students2026[paper] || students2026["CS"];
             if (rank <= 0) return 99.99;
             if (rank >= totalCandidates) return 0.01;
             
@@ -2106,7 +2577,7 @@
         function getAnalysisText(rank, marks, score, qualified, paper, category) {
             const categoryName = { GEN: "General", OBC: "OBC-NCL", EWS: "EWS", SC: "SC", ST: "ST", PWD: "PwD" }[category];
             const percentile = calculatePercentile(rank, paper);
-            const totalCandidates = totalStudents[paper] || totalStudents["CS"];
+            const totalCandidates = students2026[paper] || students2026["CS"];
             
             let analysis = '';
             
@@ -2358,7 +2829,7 @@
                 const predictedScore = calculateScoreFromMarks(userMarks, paper);
                 const percentile = calculatePercentile(predictedRank, paper);
                 const rankLower = Math.max(1, Math.round(predictedRank * 0.85));
-                const rankUpper = Math.min(totalStudents[paper], Math.round(predictedRank * 1.15));
+                const rankUpper = Math.min(students2026[paper], Math.round(predictedRank * 1.15));
                 
                 const requiredCutoff = getCutoff(paper, category);
                 const qualified = userMarks >= requiredCutoff;
