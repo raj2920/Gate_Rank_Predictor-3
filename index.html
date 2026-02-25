@@ -320,10 +320,31 @@
             text-decoration: none;
             font-weight: 600;
             border-bottom: 1px dashed #4ecdc4;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         .project-content a:hover {
-            color: #ffb3b3;
-            border-bottom-color: #ffb3b3;
+            color: #ff6b6b;
+            border-bottom-color: #ff6b6b;
+            transform: translateX(2px);
+        }
+        .demo-link-wrapper {
+            margin: 15px 0 10px;
+            padding: 12px 18px;
+            background: rgba(78, 205, 196, 0.1);
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            transition: all 0.3s ease;
+        }
+        .demo-link-wrapper:hover {
+            background: rgba(78, 205, 196, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.2);
+        }
+        .demo-link-wrapper i {
+            margin-right: 8px;
+            color: #4ecdc4;
         }
         .project-keywords {
             display: flex;
@@ -591,19 +612,25 @@
             </div>
         </section>
 
-        <!-- Projects – updated with exact resume links and descriptions -->
+        <!-- Projects – updated with working clickable demo links -->
         <section id="projects" class="section-content">
             <h2 class="section-title">Projects</h2>
             
-            <!-- Project 1: WhatsApp Chat Analyzer (ML-Powered) with Hugging Face link -->
+            <!-- Project 1: WhatsApp Chat Analyzer with clickable demo link -->
             <div class="project-card">
                 <div class="project-header">
                     <h3>WhatsApp Chat Analyzer · ML-Powered Intelligence</h3>
                     <div class="date">Dec 2022 – Jun 2024</div>
                 </div>
                 <div class="project-content">
-                    <p><strong>ML-Powered Relationship & Sentiment Intelligence Platform</strong> — Built an end-to-end ML system that analyzes WhatsApp chats to predict love interest, friendship compatibility, sentiment trends, and conversation dynamics with <strong>94% accuracy</strong>. Integrated with a Flutter frontend.  
-                    <br>🔗 <strong>Live demo:</strong> <a href="https://huggingface.co/spaces/alex292021/whatsapp-chat-Analyzer" target="_blank">huggingface.co/spaces/alex292021/whatsapp-chat-Analyzer</a></p>
+                    <p><strong>ML-Powered Relationship & Sentiment Intelligence Platform</strong> — Built an end-to-end ML system that analyzes WhatsApp chats to predict love interest, friendship compatibility, sentiment trends, and conversation dynamics with <strong>94% accuracy</strong>. Integrated with a Flutter frontend.</p>
+                    
+                    <!-- Clickable demo link that opens in new tab -->
+                    <div class="demo-link-wrapper">
+                        <i class="fas fa-external-link-alt"></i>
+                        <a href="https://huggingface.co/spaces/alex292021/whatsapp-chat-Analyzer" target="_blank" rel="noopener noreferrer">🔗 Live Demo: WhatsApp Chat Analyzer</a>
+                    </div>
+                    
                     <div class="project-keywords">
                         <span class="keyword">Python</span>
                         <span class="keyword">Pandas</span>
@@ -615,15 +642,26 @@
                 </div>
             </div>
             
-            <!-- Project 2: GATE Rank Predictor Tool – exact link from resume -->
+            <!-- Project 2: GATE Rank Predictor with verified working link -->
             <div class="project-card">
                 <div class="project-header">
                     <h3>GATE Rank Predictor Tool</h3>
                     <div class="date">Working for GATE aspirants · 2025</div>
                 </div>
                 <div class="project-content">
-                    <p><strong>Overview:</strong> Developed a GATE Rank Predictor web application using previous years' official data to estimate expected rank and score. Integrated features to analyze IIT admission possibilities and PSU job eligibility based on predicted performance. Implemented frontend logic using JavaScript and deployed via GitHub.  
-                    <br>🔗 <strong>Live demo:</strong> <a href="https://rai2920.github.io/Gate-Rank-Predictor/" target="_blank">rai2920.github.io/Gate-Rank-Predictor/</a></p>
+                    <p><strong>Overview:</strong> Developed a GATE Rank Predictor web application using previous years' official data to estimate expected rank and score. Integrated features to analyze IIT admission possibilities and PSU job eligibility based on predicted performance. Implemented frontend logic using JavaScript and deployed via GitHub.</p>
+                    
+                    <!-- Verified working link - opens in new tab -->
+                    <div class="demo-link-wrapper">
+                        <i class="fas fa-external-link-alt"></i>
+                        <a href="https://raj2920.github.io/Gate-Rank-Predictor/" target="_blank" rel="noopener noreferrer">🎯 Live Demo: GATE Rank Predictor 2025</a>
+                    </div>
+                    
+                    <!-- Alternative link in case the main one needs backup -->
+                    <div style="margin-top: 8px; font-size: 0.9rem; opacity: 0.8;">
+                        <i class="fas fa-link"></i> Direct: <a href="https://raj2920.github.io/Gate-Rank-Predictor/" target="_blank" rel="noopener noreferrer">raj2920.github.io/Gate-Rank-Predictor</a>
+                    </div>
+                    
                     <div class="project-keywords">
                         <span class="keyword">JavaScript</span>
                         <span class="keyword">HTML/CSS</span>
@@ -647,7 +685,7 @@
             </div>
         </section>
 
-        <!-- Achievements & Certifications – GATE 2025, Bihar STET 2025, CCNAv7 etc (exact from resume) -->
+        <!-- Achievements & Certifications -->
         <section id="achievements" class="section-content">
             <h2 class="section-title">Achievements & Certifications</h2>
             
@@ -721,10 +759,8 @@
                     </div>
                 </div>
                 <div class="social-links">
-                    <!-- updated LinkedIn with full link from resume -->
                     <a href="https://www.linkedin.com/in/bittu-kumar-raj-64757121a?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BANvcvPo2TzqXaZgr8uWzTg%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
                     <a href="mailto:bittuk292021@gmail.com"><i class="fas fa-envelope"></i></a>
-                    <!-- GitHub: raj2920 as per resume -->
                     <a href="https://github.com/raj2920" target="_blank"><i class="fab fa-github"></i></a>
                 </div>
             </div>
@@ -852,6 +888,17 @@
         }
         window.addEventListener('load', revealOnScroll);
         window.addEventListener('scroll', revealOnScroll);
+        
+        // Ensure all external links open in new tab
+        document.addEventListener('DOMContentLoaded', function() {
+            const allLinks = document.querySelectorAll('a[href^="http"]');
+            allLinks.forEach(link => {
+                if (!link.hasAttribute('target')) {
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener noreferrer');
+                }
+            });
+        });
     </script>
 </body>
 </html>
